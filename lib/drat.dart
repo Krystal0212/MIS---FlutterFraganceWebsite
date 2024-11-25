@@ -9,7 +9,7 @@ class SamplePage extends StatelessWidget {
       child: Container(
         height: 5459,
         decoration: const BoxDecoration(
-          color Color(0xffffffff),
+          color: Color(0xffffffff),
         ),
         child: Stack(
           children: [

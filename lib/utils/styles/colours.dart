@@ -123,6 +123,8 @@ class AppColors {
 
   static const Color lynxWhite = Color(0xFFF6F7F9);
 
+  static const Color cherubic = Color(0xFFFFE8F0);
+
   static const Color circus = Color(0xFFF96332);
 
   static const Color sangoRed = Color(0xFFFA6650);

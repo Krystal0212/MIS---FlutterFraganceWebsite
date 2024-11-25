@@ -17,32 +17,95 @@ class AppTheme {
 
   //ToDo: TextStyle
   static TextStyle get appHintStyle => TextStyle(
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: FontWeight.w700,
       color: hintTextColor,
       letterSpacing: 0.60);
 
   static TextStyle get whiteMediumStyle => TextStyle(
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: FontWeight.w500,
       color: white,
       letterSpacing: 0.60);
 
+  static TextStyle get blackMediumStyle =>
+      TextStyle(color: black, fontSize: 11, fontWeight: FontWeight.w600);
+
+  static TextStyle get blackExtraBoldStyle => const TextStyle(
+      color: AppColors.lacqueredLiquorice,
+      fontSize: 17,
+      fontWeight: FontWeight.w800,
+      letterSpacing: 0.60);
+
   //ToDo: InputDecoration
   static InputDecoration get searchInputDecoration => InputDecoration(
-      suffixIcon: const Icon(Icons.search), // Leading search icon
-      hintText: 'Hey, what are you looking for?',
-      hintStyle: AppTheme.appHintStyle,
-      contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25.0),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.0),
-        borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
-      ),
-      // focusedBorder: OutlineInputBorder(
-      //   borderRadius: BorderRadius.circular(40.0),
-      //   borderSide: BorderSide(color: AppTheme.chosenTextFieldBorderColor, width: 2.0),
-      // ),
-    );
+        suffixIcon: const Icon(Icons.search), // Leading search icon
+        hintText: 'Hey, what are you looking for?',
+        hintStyle: AppTheme.appHintStyle,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
+        filled: true,
+        fillColor: AppTheme.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: BorderSide(
+              color: AppTheme.chosenTextFieldBorderColor, width: 2.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
+        ),
+      );
+
+  //ToDo: ButtonStyle
+  static ButtonStyle get navigationUserSectionButtonStyle =>
+      ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        textStyle: blackMediumStyle,
+        splashFactory: NoSplash.splashFactory,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        iconColor: black,
+      );
+
+  static ButtonStyle get navigationProductSectionButtonStyle =>
+      ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        textStyle: blackExtraBoldStyle,
+        splashFactory: NoSplash.splashFactory,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        iconColor: black,
+      );
+
+  static ButtonStyle get navigationHotDealSectionButtonStyle =>
+      ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        textStyle: blackMediumStyle,
+        splashFactory: NoSplash.splashFactory,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        iconColor: black,
+      );
 
   //ToDo: Theme
   static final ThemeData lightTheme = ThemeData(
@@ -65,20 +128,13 @@ class AppTheme {
     // Customize Input Decorations
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.chefsHat,
+      fillColor: AppTheme.white,
       contentPadding: const EdgeInsets.all(30),
       hintStyle: appHintStyle,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide:
+            BorderSide(color: AppTheme.borderTextFieldBorderColor, width: 10.0),
       ),
     ),
 
@@ -87,7 +143,8 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: primary,
         elevation: 0,
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        textStyle:
+            TextStyle(color: black, fontSize: 14, fontWeight: FontWeight.bold),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
