@@ -3,23 +3,34 @@ import 'package:flutter/material.dart';
 
 class CustomSliverTitle extends StatelessWidget {
   final String title;
+  final String? dangerFollowingTitle;
+  final Alignment? alignment;
 
   const CustomSliverTitle({
     super.key,
-    required this.title
+    required this.title,
+    this.dangerFollowingTitle,
+    this.alignment
   });
 
   @override
   Widget build(BuildContext context) {
+    final alertText = dangerFollowingTitle??'';
     return SliverToBoxAdapter(
       child: Align(
-        alignment: Alignment.center,
-        child: Text(
-          title,
-          style: TextStyle(
-            color: AppTheme.black,
-            fontSize: 20,
-          ),
+        alignment: alignment??Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                title,
+                style: AppTheme.sliverDefaultStyle
+            ),
+            Text(
+                alertText,
+                style: AppTheme.dangerTextStyle
+            ),
+          ],
         ),
       ),
     );

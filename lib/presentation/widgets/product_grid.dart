@@ -23,14 +23,15 @@ class ProductGrid extends StatelessWidget {
           ),
 
           delegate: SliverChildBuilderDelegate((context, index) {
-            return const ProductCard(
-                imageUrl: 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=300&v=1692754461&width=300',
-                productId: 'pid123',
-                title: 'Fragrance',
-                price: '\$999'
+            return ProductCard(
+              imageUrl: 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=300&v=1692754461&width=300',
+              productId: 'pid123',
+              title: 'Fragrance',
+              price: '\$999',
+              badgeText: index%2==0?'men':'women',
             );
           },
-          childCount: 50),
+          childCount: 10),
       ),
     );
   }

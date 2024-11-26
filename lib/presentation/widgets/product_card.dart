@@ -120,13 +120,13 @@ class CardImage extends StatelessWidget{
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: AppTheme.primary,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           badgeText!,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: AppTheme.white,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),

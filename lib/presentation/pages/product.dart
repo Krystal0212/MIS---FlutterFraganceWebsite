@@ -43,11 +43,22 @@ class ProductPageState extends State<ProductPage> {
       ),
       body: CustomScrollView(
         slivers: [
-          const CustomFloatingSliverTitle(title: 'Black Friday', floatingLevel: 2,),
+          const CustomSliverTitle(title: 'Black Friday'),
           ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
+          CustomSliverTextButton(
+              onPressed: (){},
+              text: 'View more',
+              maxWidth: 400
+          ),
 
-          const CustomFloatingSliverTitle(title: 'Latest in Stock', floatingLevel: 1,),
+          const CustomSliverTitle(title: 'Latest in Stock'),
           ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
+          CustomSliverTextButton(
+              onPressed: (){},
+              text: 'View more',
+              maxWidth: 400
+          ),
+
         ],
       )
     );

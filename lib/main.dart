@@ -5,6 +5,8 @@ import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'presentation/pages/product_detail.dart';
+
 void main() async{
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const ProductPage(),
+      home: const ProductDetailPage(),
     );
   }
 }

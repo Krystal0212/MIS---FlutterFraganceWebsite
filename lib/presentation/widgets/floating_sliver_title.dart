@@ -23,11 +23,7 @@ class CustomFloatingSliverTitle extends StatelessWidget {
       flexibleSpace: Center(
         child: Text(
           title,
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.black,
-          ),
+          style: AppTheme.sliverDefaultStyle
         ),
       ),
     );
