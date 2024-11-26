@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eaudelux/presentation/widgets/text_navigator_button.dart';
 
 import 'package:eaudelux/utils/styles/themes.dart';
 
@@ -29,46 +30,31 @@ class ProductCard extends StatelessWidget {
     return RepaintBoundary(
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: InkWell(
+          onTap: (){
+            print('check for card info');
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            // Image
-            CardImage(
-              imageUrl: imageUrl,
-              badgeText: badgeText,
-              onHoverButtonClick: onHoverButtonClick,
-            ),
-
-            // Title & Price
-            CardInfo(
-              title: title,
-              price: price,
-            ),
-
-            // Cart & buy buttons
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
-              child: SizedBox(
-                width: 300,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        onPressed: (){},
-                        color: AppTheme.black,
-                        icon: const Icon(Icons.add_shopping_cart)
-                    ),
-                    IconButton(
-                        onPressed: (){},
-                        color: AppTheme.black,
-                        icon: const Icon(Icons.shopping_bag_outlined)
-                    )
-                  ],
-                ),
+              // Image
+              CardImage(
+                imageUrl: imageUrl,
+                badgeText: badgeText,
+                onHoverButtonClick: onHoverButtonClick,
               ),
-            )
-          ],
+
+              // Title & Price
+              CardInfo(
+                title: title,
+                price: price,
+              ),
+
+              // Cart & buy buttons
+              const CardActivity(productId: 'pid123')
+            ],
+          ),
         ),
       ),
     );

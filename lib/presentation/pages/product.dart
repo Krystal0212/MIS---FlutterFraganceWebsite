@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/appbar.dart';
-import '../widgets/product_grid.dart';
-import '../widgets/sliver_title.dart';
+import '../widgets/widgets.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -27,7 +25,7 @@ class ProductPageState extends State<ProductPage> {
     maxWidth = MediaQuery.of(context).size.width;
     maxHeight = MediaQuery.of(context).size.height;
 
-    appBarHeight = maxHeight * 0.3;
+    appBarHeight = maxHeight * 0.2;
     appBarSize = Size(maxWidth, appBarHeight);
   }
 
@@ -45,7 +43,10 @@ class ProductPageState extends State<ProductPage> {
       ),
       body: CustomScrollView(
         slivers: [
-          const CustomSliverTitle(title: 'Latest in Stock'),
+          const CustomFloatingSliverTitle(title: 'Black Friday', floatingLevel: 2,),
+          ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
+
+          const CustomFloatingSliverTitle(title: 'Latest in Stock', floatingLevel: 1,),
           ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
         ],
       )

@@ -14,16 +14,21 @@ class CustomAppBar extends StatelessWidget {
     return Column(
       children: <Widget>[
         EventCountdownSection(
-          height: appBarSize.height * 0.12,
+          height: appBarSize.height * 0.2,
           width: appBarSize.width,
         ),
         ActionsSection(
-          height: appBarSize.height * 0.25,
+          height: appBarSize.height * 0.35,
           width: appBarSize.width,
         ),
         NavigatorsSection(
-            height: appBarSize.height * 0.15, width: appBarSize.width),
-        SalesSection(height: appBarSize.height * 0.15, width: appBarSize.width),
+            height: appBarSize.height * 0.25,
+            width: appBarSize.width
+        ),
+        SalesSection(
+            height: appBarSize.height * 0.2,
+            width: appBarSize.width
+        ),
       ],
     );
   }
