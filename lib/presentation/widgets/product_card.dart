@@ -109,6 +109,8 @@ class CardImage extends StatelessWidget{
                     borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
                     child: CachedNetworkImage(
+                      width: 300,
+                      height: 250,
                       maxHeightDiskCache: 300,
                       maxWidthDiskCache: 200,
                       imageUrl: imageUrl,
@@ -119,7 +121,6 @@ class CardImage extends StatelessWidget{
                         child: CircularProgressIndicator(),
                       ),
                       placeholderFadeInDuration: const Duration(milliseconds: 300),
-                      height: 250,
                       fit: BoxFit.fill,
                     ),
                   ),

@@ -15,6 +15,7 @@ class AppTheme {
   static Color get borderTextFieldBorderColor => AppColors.coldMorning;
   static Color get chosenTextFieldBorderColor => AppColors.purpleShade;
 
+
   //ToDo: TextStyle
   static TextStyle get appHintStyle => TextStyle(
       fontSize: 14,
