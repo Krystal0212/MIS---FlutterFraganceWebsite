@@ -14,9 +14,13 @@ class TextNavigatorButton extends StatelessWidget {
     return TextButton(
         onPressed: onPressedFunction ?? () {},
         style: buttonStyle,
-        child: Text(
-          title,
-          style: AppTheme.blackMediumStyle,
-        ));
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            title,
+            style: AppTheme.blackMediumStyle,
+          ),
+        )
+    );
   }
 }
