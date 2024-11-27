@@ -23,13 +23,25 @@ class AppTheme {
       letterSpacing: 0.60);
 
   static TextStyle get whiteMediumStyle => TextStyle(
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: FontWeight.w500,
       color: white,
       letterSpacing: 0.60);
 
   static TextStyle get blackMediumStyle =>
       TextStyle(color: black, fontSize: 11, fontWeight: FontWeight.w600);
+
+  static TextStyle get blackInfoStyle =>
+      TextStyle(color: black, fontSize: 20, fontWeight: FontWeight.w600);
+
+  static TextStyle get itemStyle =>
+      TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w600);
+
+  static TextStyle get itemNameStyle =>
+      TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w700);
+
+  static TextStyle get brandStyle => const TextStyle(
+      color: AppColors.karimunBlue, fontSize: 20, fontWeight: FontWeight.w600);
 
   static TextStyle get blackExtraBoldStyle => const TextStyle(
       color: AppColors.lacqueredLiquorice,
@@ -105,6 +117,49 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         iconColor: black,
+      );
+
+  static ButtonStyle get navigationLogoButtonStyle => ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(18.0),
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        splashFactory: NoSplash.splashFactory,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        iconColor: black,
+      );
+
+  //ToDo: BoxDecoration
+  static BoxDecoration get inventoryTabBoxDecoration => BoxDecoration(
+        color: AppColors.white,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+        border: Border.all(
+          color: AppColors.solitude,
+          width: 3,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.abaddonBlack
+                .withOpacity(0.05), // Shadow color (you can adjust the opacity)
+            offset: const Offset(0,
+                4), // Offset of the shadow (x, y). Here, it moves the shadow 4 pixels down
+            blurRadius: 6, // Blur radius (how soft the shadow appears)
+            spreadRadius: 2, // Spread radius (how much the shadow expands)
+          ),
+        ],
+      );
+
+  static BoxDecoration get squarebBoxDecoration => BoxDecoration(
+        color: AppColors.white,
+        border: Border.all(
+          color: AppColors.solitude,
+          width: 2,
+        ),
       );
 
   //ToDo: Theme

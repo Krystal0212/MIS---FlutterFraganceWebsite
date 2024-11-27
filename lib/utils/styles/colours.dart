@@ -7,6 +7,10 @@ class AppColors {
 
   static const Color lightIris = Color(0x005151C6);
 
+  static const Color downriver = Color(0xFF061B5A);
+
+  static const Color navyBlue = Color(0xFF1C3A92);
+
   static const Color endindNavyBlue = Color(0xFF192F5D);
 
   static const Color erieBlack = Color(0xFF1A1A1A);
@@ -20,6 +24,8 @@ class AppColors {
   static const Color bneiBrakBay = Color(0xFF2557D6);
 
   static const Color verifiedBlack = Color(0xFF242424);
+
+  static const Color cancerSeagreenScarab = Color(0xFF29A3A3);
 
   static const Color theEnd = Color(0xFF2A2A2A);
 
@@ -75,6 +81,8 @@ class AppColors {
 
   static const Color lavenderMist = Color(0xFFE3E4FC);
 
+  static const Color solitude = Color(0xFFE9EBF0);
+
   static const Color foundationWhite = Color(0xFFF1F1FE);
 
   static const Color white = Color(0xFFFFFFFF); // Highest luminance (brightest)
@@ -82,6 +90,8 @@ class AppColors {
   static const Color monstrousGreen = Color(0xFF18CE0F);
 
   static const Color limeShot = Color(0xFF1BE611);
+
+  static const Color karimunBlue = Color(0xFF1B97F3);
 
   static const Color fantasyConsoleSky = Color(0xFF2CA8FF);
 
@@ -102,6 +112,8 @@ class AppColors {
   static const Color iric = Color(0xFF5252C7);
 
   static const Color shadowMountain = Color(0xFF585858);
+
+  static const Color tianLanSky = Color(0xFF58B1F6);
 
   static const Color seaCapture = Color(0xFF5BC0DE);
 
@@ -132,6 +144,8 @@ class AppColors {
   static const Color pelati = Color(0xFFFF3636);
 
   static const Color corona = Color(0xFFFFB236);
+
+  static const Color icyLandscape = Color(0xFFC9E6FC);
 
   static const Color officeNeonLight = Color(0xFFFE2472);
 }
