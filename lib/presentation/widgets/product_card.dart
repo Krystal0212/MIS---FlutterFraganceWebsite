@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
   final String price;
   final String? badgeText;
   final bool showHoverButton; // Toggle hover button
-  final VoidCallback? onHoverButtonClick; // Action on hover button click
+  final VoidCallback? onButtonClick; // Action on hover button click
 
   const ProductCard({
     super.key,
@@ -22,7 +22,7 @@ class ProductCard extends StatelessWidget {
     required this.price,
     this.badgeText,
     this.showHoverButton = false,
-    this.onHoverButtonClick,
+    this.onButtonClick,
   });
 
   @override
@@ -32,7 +32,7 @@ class ProductCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: InkWell(
           onTap: (){
-            onHoverButtonClick;
+            onButtonClick;
             print('check for card info');
           },
           child: Column(
@@ -43,7 +43,6 @@ class ProductCard extends StatelessWidget {
               CardImage(
                 imageUrl: imageUrl,
                 badgeText: badgeText,
-                onHoverButtonClick: onHoverButtonClick,
               ),
 
               // Title & Price
@@ -65,13 +64,11 @@ class ProductCard extends StatelessWidget {
 class CardImage extends StatelessWidget{
   final String imageUrl;
   final String? badgeText;
-  final VoidCallback? onHoverButtonClick;
 
   const CardImage({
     super.key,
     required this.imageUrl,
     this.badgeText,
-    this.onHoverButtonClick
   });
 
   @override
