@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../utils/styles/colours.dart';
 import '../../utils/styles/themes.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -408,8 +409,8 @@ class _ProductDetailState extends State<ProductDetail> {
                       onPressed: (){
                         selectedOption.value = 'brandInfo';
                       },
-                      child: const Text('Brand Information'),
                     style: AppTheme.sliverTextButtonStyle,
+                      child: const Text('Brand Information'),
                   ),
                   TextButton(
                       onPressed: (){
@@ -422,7 +423,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
             Container(
               width: widget.maxWidth*0.9,
-              color: Colors.red,
+              color: AppColors.cabbageBlossomViolet,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
