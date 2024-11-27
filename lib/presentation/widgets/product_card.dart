@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
   final String price;
   final String? badgeText;
   final bool showHoverButton; // Toggle hover button
-  final VoidCallback? onHoverButtonClick; // Action on hover button click
+  final VoidCallback? onButtonClick; // Action on hover button click
 
   const ProductCard({
     super.key,
@@ -22,7 +22,7 @@ class ProductCard extends StatelessWidget {
     required this.price,
     this.badgeText,
     this.showHoverButton = false,
-    this.onHoverButtonClick,
+    this.onButtonClick,
   });
 
   @override
@@ -32,6 +32,7 @@ class ProductCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: InkWell(
           onTap: (){
+            onButtonClick;
             print('check for card info');
           },
           child: Column(
@@ -42,7 +43,6 @@ class ProductCard extends StatelessWidget {
               CardImage(
                 imageUrl: imageUrl,
                 badgeText: badgeText,
-                onHoverButtonClick: onHoverButtonClick,
               ),
 
               // Title & Price
@@ -64,79 +64,63 @@ class ProductCard extends StatelessWidget {
 class CardImage extends StatelessWidget{
   final String imageUrl;
   final String? badgeText;
-  final VoidCallback? onHoverButtonClick;
 
   const CardImage({
     super.key,
     required this.imageUrl,
     this.badgeText,
-    this.onHoverButtonClick
   });
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<bool> isHovered = ValueNotifier(false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-      child: ValueListenableBuilder(
-          valueListenable: isHovered,
-          builder: (context, isHovering, child) {
-            return InkWell(
-              onTap: onHoverButtonClick,
-              onHover: (hover) {
-                print('hovering on a object');
-                isHovered.value = hover;
-              },
-              //onExit: (_) => isHovered.value = false,
-              child: Stack(
-                children: [
-                  // Product Image
-                  ClipRRect(
-                    borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                    child: CachedNetworkImage(
-                      width: 300,
-                      height: 250,
-                      maxHeightDiskCache: 300,
-                      maxWidthDiskCache: 200,
-                      imageUrl: imageUrl,
-                      errorWidget: (context, url, error) => const Center(
-                        child: Icon(Icons.image_not_supported_outlined),
-                      ),
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      placeholderFadeInDuration: const Duration(milliseconds: 300),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-
-                  // Badge
-                  if (badgeText != null)
-                    Positioned(
-                      top: 8,
-                      left: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          badgeText!,
-                          style: TextStyle(
-                            color: AppTheme.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+      child: Stack(
+        children: [
+          // Product Image
+          ClipRRect(
+            borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(12)),
+            child: CachedNetworkImage(
+              width: 300,
+              height: 250,
+              maxHeightDiskCache: 300,
+              maxWidthDiskCache: 200,
+              imageUrl: imageUrl,
+              errorWidget: (context, url, error) => const Center(
+                child: Icon(Icons.image_not_supported_outlined),
               ),
-            );
-          }
+              placeholder: (context, url) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              placeholderFadeInDuration: const Duration(milliseconds: 300),
+              fit: BoxFit.fill,
+            ),
+          ),
+
+          // Badge
+          if (badgeText != null)
+            Positioned(
+              top: 8,
+              left: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  badgeText!,
+                  style: TextStyle(
+                    color: AppTheme.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
