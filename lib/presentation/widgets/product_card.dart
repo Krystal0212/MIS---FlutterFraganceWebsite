@@ -32,6 +32,7 @@ class ProductCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: InkWell(
           onTap: (){
+            onHoverButtonClick;
             print('check for card info');
           },
           child: Column(
@@ -75,68 +76,54 @@ class CardImage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<bool> isHovered = ValueNotifier(false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-      child: ValueListenableBuilder(
-          valueListenable: isHovered,
-          builder: (context, isHovering, child) {
-            return InkWell(
-              onTap: onHoverButtonClick,
-              onHover: (hover) {
-                print('hovering on a object');
-                isHovered.value = hover;
-              },
-              //onExit: (_) => isHovered.value = false,
-              child: Stack(
-                children: [
-                  // Product Image
-                  ClipRRect(
-                    borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                    child: CachedNetworkImage(
-                      width: 300,
-                      height: 250,
-                      maxHeightDiskCache: 300,
-                      maxWidthDiskCache: 200,
-                      imageUrl: imageUrl,
-                      errorWidget: (context, url, error) => const Center(
-                        child: Icon(Icons.image_not_supported_outlined),
-                      ),
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      placeholderFadeInDuration: const Duration(milliseconds: 300),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-
-                  // Badge
-                  if (badgeText != null)
-                    Positioned(
-                      top: 8,
-                      left: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          badgeText!,
-                          style: TextStyle(
-                            color: AppTheme.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+      child: Stack(
+        children: [
+          // Product Image
+          ClipRRect(
+            borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(12)),
+            child: CachedNetworkImage(
+              width: 300,
+              height: 250,
+              maxHeightDiskCache: 300,
+              maxWidthDiskCache: 200,
+              imageUrl: imageUrl,
+              errorWidget: (context, url, error) => const Center(
+                child: Icon(Icons.image_not_supported_outlined),
               ),
-            );
-          }
+              placeholder: (context, url) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              placeholderFadeInDuration: const Duration(milliseconds: 300),
+              fit: BoxFit.fill,
+            ),
+          ),
+
+          // Badge
+          if (badgeText != null)
+            Positioned(
+              top: 8,
+              left: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  badgeText!,
+                  style: TextStyle(
+                    color: AppTheme.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
