@@ -4,6 +4,7 @@ import 'colours.dart';
 class AppTheme {
   //ToDo: Color
   static Color get error => AppColors.sangoRed; // Error color
+  static Color get dangerous => AppColors.bethlehemRed; // Danger color
   static Color get primary => AppColors.purpleShade; // Primary color
   static Color get lightBackground =>
       AppColors.white; // Background color for light theme
@@ -53,6 +54,23 @@ class AppTheme {
       fontSize: 35,
       fontWeight: FontWeight.bold,
       color: AppColors.bethlehemRed
+  );
+
+  static TextStyle get tileHeader => TextStyle(
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+    color: black
+  );
+
+  static TextStyle get tileSubString => TextStyle(
+      fontSize: 20,
+      color: labelTextColor
+  );
+
+  static TextStyle get tileAlertString => TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: dangerous
   );
 
   //ToDo: InputDecoration
