@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eaudelux/presentation/pages/product_detail/widgets/sliver_title.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  const ProductDetailPage({super.key});
+  final Perfume perfume;
+
+  const ProductDetailPage({super.key, required this.perfume});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -12,6 +13,7 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
+  late Perfume perfume;
 
   late String imgLink;
 
@@ -34,30 +36,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     appBarHeight = maxHeight * 0.2;
     appBarSize = Size(maxWidth, appBarHeight);
 
-    imgLink = 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=600&v=1692754461&width=600';
+    perfume = widget.perfume;
 
-    prodCategories = [
-      {
-        'category' : '1.6 Oz',
-        'price' : '\$100'
-      },
-      {
-        'category' : '3.2 Oz',
-        'price' : '\$189'
-      },
-      {
-        'category' : '4.8 Oz',
-        'price' : '\$269'
-      },
-      {
-        'category' : '6.4 Oz',
-        'price' : '\$349'
-      },
-    ];
+    imgLink = perfume.imageUrl;
+    String typeSize = perfume.sizeType.toString();
+
+    for (int index = 0; index < perfume.sizes.length; index++) {
+      prodCategories.add({
+        'size': '${perfume.sizes[index]} $typeSize',
+        'price': '\$${perfume.price[index]}',
+      });
+    }
+
     prodBadges = ['Unisex', 'Extrait de Parfum'];
     prodDescriptions = {
-      'brandInfo' : 'This is brand Information',
-      'prodDesc' : 'This is product description'
+      'brandInfo': 'This is brand Information',
+      'prodDesc': 'This is product description'
     };
   }
 
@@ -70,30 +64,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size(appBarSize.width, appBarSize.height),
-          child: InventoryAppBar(appBarSize: appBarSize)
-        ),
+            preferredSize: Size(appBarSize.width, appBarSize.height),
+            child: InventoryAppBar(appBarSize: appBarSize)),
         body: CustomScrollView(
           slivers: [
-            const CustomSliverTitle(
-              title: 'Sales end in:',
-              dangerFollowingTitle: '100 days',
-              alignment: Alignment.center,
-            ),
             ProductGeneralPlaceholder(
-              imgUrl: imgLink,
+              imgUrl: perfume.imageUrl,
               maxWidth: maxWidth,
-              maxHeight: maxHeight,
+              maxHeight: maxHeight * 0.6,
               prodCategories: prodCategories,
               prodBadges: prodBadges,
             ),
-            ProductDescriptionPlaceholder(
-              prodDescriptions: prodDescriptions,
-              maxWidth: maxWidth,
-            )
           ],
-        )
-    );
+        ));
   }
 }
 
@@ -117,13 +100,14 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Container(
         alignment: Alignment.center,
-        width: maxWidth * 0.9, // Slightly larger width for more space
+        width: maxWidth * 0.8, // Slightly larger width for more space
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal, // Scrollable if content overflows
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ProductImage(imgUrl: imgUrl),
+              const SizedBox(width: 50),
               ProductDetailPlaceholder(
                 prodCategories: prodCategories,
                 prodBadges: prodBadges,
@@ -137,14 +121,11 @@ class ProductGeneralPlaceholder extends StatelessWidget {
 }
 
 class ProductDetailPlaceholder extends StatelessWidget {
-  final List<Map<String,String>> prodCategories;
+  final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
 
-  const ProductDetailPlaceholder({
-    super.key,
-    required this.prodCategories,
-    required this.prodBadges
-  });
+  const ProductDetailPlaceholder(
+      {super.key, required this.prodCategories, required this.prodBadges});
 
   @override
   Widget build(BuildContext context) {
@@ -162,21 +143,16 @@ class ProductDescriptionPlaceholder extends StatelessWidget {
   final Map<String, String> prodDescriptions;
   final double maxWidth;
 
-  const ProductDescriptionPlaceholder({
-    super.key,
-    required this.prodDescriptions,
-    required this.maxWidth
-  });
+  const ProductDescriptionPlaceholder(
+      {super.key, required this.prodDescriptions, required this.maxWidth});
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: SizedBox(
-        width: maxWidth*0.8,
+        width: maxWidth * 0.8,
         child: ProductDetail(
-          prodDescription: prodDescriptions,
-          maxWidth: maxWidth
-        ),
+            prodDescription: prodDescriptions, maxWidth: maxWidth),
       ),
     );
   }
@@ -204,8 +180,7 @@ class ProductImage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
       child: ClipRRect(
-        borderRadius:
-        const BorderRadius.all(Radius.circular(12)),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
         child: CachedNetworkImage(
           width: 400,
           height: 550,
@@ -219,7 +194,7 @@ class ProductImage extends StatelessWidget {
             child: CircularProgressIndicator(),
           ),
           placeholderFadeInDuration: const Duration(milliseconds: 300),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -228,20 +203,16 @@ class ProductImage extends StatelessWidget {
 
 class ProductData extends StatefulWidget {
   final List<String> prodBadges;
-  final List<Map<String,String>> prodCategories;
+  final List<Map<String, String>> prodCategories;
 
-  const ProductData({
-    super.key,
-    required this.prodBadges,
-    required this.prodCategories
-  });
+  const ProductData(
+      {super.key, required this.prodBadges, required this.prodCategories});
 
   @override
   State<ProductData> createState() => _ProductDataState();
 }
 
 class _ProductDataState extends State<ProductData> {
-
   final ValueNotifier<int> currButtonIndex = ValueNotifier(0);
 
   @override
@@ -254,54 +225,47 @@ class _ProductDataState extends State<ProductData> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: currButtonIndex,
-      builder: (context, currIndex, _){
+      builder: (context, currIndex, _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Row(
-                children: widget.prodBadges.map((badge){
-                  return  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary,
-                      borderRadius: BorderRadius.circular(8),
+            Row(
+              children: widget.prodBadges.map((badge) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    badge,
+                    style: TextStyle(
+                      color: AppTheme.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Text(
-                      badge,
-                      style: TextStyle(
-                        color: AppTheme.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-
+                  ),
+                );
+              }).toList(),
+            ),
             Text(
               "Product's name",
               style: TextStyle(
-                fontSize: 45,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.black
-              ),
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.black),
             ),
-
             Container(
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
                 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
-                style: TextStyle(
-                    fontSize: 25,
-                    color: AppTheme.black
-                ),
+                style: TextStyle(fontSize: 25, color: AppTheme.black),
               ),
             ),
-
             GridView.builder(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 100, // Width
@@ -310,8 +274,10 @@ class _ProductDataState extends State<ProductData> {
                 crossAxisSpacing: 10, // Horizontal spacing
               ),
               itemCount: widget.prodCategories.length,
-              shrinkWrap: true, // Ensures the grid only takes up necessary space
-              physics: const NeverScrollableScrollPhysics(), // Prevents nested scrolling issues
+              shrinkWrap:
+                  true, // Ensures the grid only takes up necessary space
+              physics:
+                  const NeverScrollableScrollPhysics(), // Prevents nested scrolling issues
               itemBuilder: (context, index) {
                 return TextButton(
                   onPressed: () {
@@ -332,43 +298,32 @@ class _ProductDataState extends State<ProductData> {
                         : AppTheme.white,
                   ),
                   child: Text(
-                      widget.prodCategories[index]['category']!,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: AppTheme.black
-                    ),
+                    widget.prodCategories[index]['category']!,
+                    style: TextStyle(fontSize: 20, color: AppTheme.black),
                   ),
                 );
               },
             ),
-
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: Text(
-                  "${widget.prodCategories[currIndex]['price']}",
-                style: TextStyle(
-                  fontSize: 55,
-                  color: AppTheme.black
-                ),
+                "${widget.prodCategories[currIndex]['price']}",
+                style: TextStyle(fontSize: 55, color: AppTheme.black),
               ),
             ),
-
             TextButton(
-                onPressed: (){},
+                onPressed: () {},
                 style: AppTheme.defaultStyle,
                 child: Text(
-                    'Buy now',
+                  'Send Restock Request',
                   style: TextStyle(
                     color: AppTheme.white,
                     fontSize: 40,
-
                   ),
-                )
-            )
+                ))
           ],
         );
       },
-      
     );
   }
 }
@@ -377,11 +332,8 @@ class ProductDetail extends StatefulWidget {
   final Map<String, String> prodDescription;
   final double maxWidth;
 
-  const ProductDetail({
-    super.key,
-    required this.prodDescription,
-    required this.maxWidth
-  });
+  const ProductDetail(
+      {super.key, required this.prodDescription, required this.maxWidth});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -399,46 +351,41 @@ class _ProductDetailState extends State<ProductDetail> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(widget.maxWidth*0.05, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(widget.maxWidth * 0.05, 0, 0, 0),
               child: Row(
                 children: [
                   TextButton(
-                      onPressed: (){
-                        selectedOption.value = 'brandInfo';
-                      },
+                    onPressed: () {
+                      selectedOption.value = 'brandInfo';
+                    },
                     style: AppTheme.sliverTextButtonStyle,
-                      child: const Text('Brand Information'),
+                    child: const Text('Brand Information'),
                   ),
                   TextButton(
-                      onPressed: (){
+                      onPressed: () {
                         selectedOption.value = 'prodDesc';
                       },
-                      child: const Text('Product Description')
-                  ),
+                      child: const Text('Product Description')),
                 ],
               ),
             ),
             Container(
-              width: widget.maxWidth*0.9,
+              width: widget.maxWidth * 0.9,
               color: Colors.red,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   children: [
-                     Text(
-                        'Description: ',
+                    Text(
+                      'Description: ',
                       style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.black
-                      ),
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.black),
                     ),
                     Text(
-                        widget.prodDescription[currSelectedOption]!,
-                      style: TextStyle(
-                          fontSize: 25,
-                        color: AppTheme.black
-                      ),
+                      widget.prodDescription[currSelectedOption]!,
+                      style: TextStyle(fontSize: 25, color: AppTheme.black),
                     )
                   ],
                 ),
@@ -450,5 +397,3 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 }
-
-

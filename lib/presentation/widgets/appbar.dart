@@ -1,3 +1,4 @@
+import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashboard.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class InventoryAppBar extends StatelessWidget {
@@ -63,7 +64,7 @@ class ButtonSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InventoryDashboard())),
               style: AppTheme.navigationLogoButtonStyle,
               child: SvgPicture.asset(
                 logoImagePath,
@@ -71,7 +72,7 @@ class ButtonSection extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InventoryDashboard())),
               child: Text(
                 'Inventory',
                 style: AppTheme.whiteMediumStyle,

@@ -42,8 +42,9 @@ class _StockDataListState extends State<StockDataList> {
         final brandName = brands[index];
 
         // Filter perfumes by brand
-        final brandPerfumes =
-            perfumes.where((perfume) => perfume.brand.name == brandName).toList();
+        final brandPerfumes = perfumes
+            .where((perfume) => perfume.brand.name == brandName)
+            .toList();
 
         return ExpansionTile(
           title: Text(
@@ -89,22 +90,24 @@ class ItemTile extends StatelessWidget {
               print('Item tapped: ${perfume.name}');
             }
             Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) => const ProductDetailPage(), // Replace with your target page
-            ),
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ProductDetailPage(perfume: perfume), // Replace with your target page
+              ),
             );
           },
           child: ListTile(
             title: Text(perfume.name, style: AppTheme.itemNameStyle),
-            subtitle:
-                Text('Stock: ${perfume.stock}', style: AppTheme.itemStyle),
+            subtitle: Text('Stock: ${perfume.totalUnitInStock}',
+                style: AppTheme.itemStyle),
             trailing: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (perfume.stock < lowStockThreshold)
+                if (perfume.totalUnitInStock + perfume.totalUnitReceived <
+                    lowStockThreshold)
                   Tooltip(
                     message: 'Stock is low!',
                     child: IconButton(
@@ -115,7 +118,7 @@ class ItemTile extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(width: 10),
-                Text('\$${perfume.price.toStringAsFixed(2)}',
+                Text('\$${perfume.lowestPrice.toStringAsFixed(2)}',
                     style: AppTheme.itemStyle),
               ],
             ),
@@ -132,13 +135,21 @@ class ItemTile extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shadowColor: AppColors.tianLanSky,
+          backgroundColor: AppColors.lynxWhite,
           title: const Text('Low Stock Alert'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Stock for "${perfume.name}" is low!'),
-              Text('Current stock: ${perfume.stock}'),
-              const Text('Enter the quantity you want to restock if you want to send a restock request:'),
+              Text(
+                'Stock for "${perfume.name}" is low! Current stock: ${perfume.totalUnitInStock}',
+                style: AppTheme.blackInfoStyle,
+              ),
+              Text(
+                'Enter the quantity you want to restock if you want to send a restock request:',
+                style: AppTheme.blackInfoStyle,
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: quantityController,
                 keyboardType: TextInputType.number,
@@ -151,25 +162,34 @@ class ItemTile extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: const Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: AppTheme.brandStyle,
+              ),
             ),
             TextButton(
               onPressed: () {
                 final quantity = int.tryParse(quantityController.text);
-                if (quantity != null && quantity > 0) {
+                if (quantity != null && quantity >= 0) {
                   // Here you would send the restock request (e.g., via a service or API)
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Restock request for $quantity units sent!')),
+                    SnackBar(
+                        content: Text(
+                            'Restock request for ${quantity == 0 ? 0 : quantity} units sent!')),
                   );
                   Navigator.of(context).pop(); // Close the dialog
                 } else {
                   // If the input is invalid, show a message
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter a valid quantity')),
+                    const SnackBar(
+                        content: Text('Please enter a valid quantity')),
                   );
                 }
               },
-              child: const Text('Send Request'),
+              child: Text(
+                'Send Request',
+                style: AppTheme.brandStyle,
+              ),
             ),
           ],
         );

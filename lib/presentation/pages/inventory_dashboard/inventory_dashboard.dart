@@ -39,9 +39,9 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     netSales = calculateNetSales(perfumes);
 
     for (var perfume in perfumes) {
-      totalCogs += perfume.cogs;
-      totalBeginningInventoryCost += perfume.beginningInventoryCost;
-      totalEndingInventoryCost += perfume.endingInventoryCost;
+      totalCogs += perfume.totalProductCogs;
+      totalBeginningInventoryCost += perfume.totalProductBeginningInventoryCost;
+      totalEndingInventoryCost += perfume.totalProductEndingInventoryCost;
     }
 
     double avgCost = caculateAVGInventory(
@@ -54,7 +54,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
 
   double calculateNetSales(List<Perfume> perfumes) {
     return perfumes.fold(
-        0.0, (sum, perfume) => sum + (perfume.sold * perfume.price));
+        0.0, (sum, perfume) => sum + (perfume.totalProductNetSales));
   }
 
   double caculateAVGInventory(

@@ -37,14 +37,14 @@ class BarChartSectionState extends State<BarChartSection> {
     List<Perfume> topSellingPerfumes = getTopSellingPerfumes(widget.perfumes);
 
     bottomLabels = topSellingPerfumes.map((perfume) => perfume.name).toSet().toList();
-    importedBarData = topSellingPerfumes.map((perfume) => [perfume.sold, perfume.stock, perfume.receive]).toList();
+    importedBarData = topSellingPerfumes.map((perfume) => [perfume.totalUnitSold, perfume.totalUnitInStock, perfume.totalUnitReceived]).toList();
 
     barData = transformToCumulative(importedBarData);
   }
 
   List<Perfume> getTopSellingPerfumes(List<Perfume> perfumes) {
   // Sort perfumes by the `sold` field in descending order
-  perfumes.sort((a, b) => b.sold.compareTo(a.sold));
+  perfumes.sort((a, b) => b.totalUnitSold.compareTo(a.totalUnitSold));
   
   // Take the top 5 perfumes
   return perfumes.take(5).toList();
