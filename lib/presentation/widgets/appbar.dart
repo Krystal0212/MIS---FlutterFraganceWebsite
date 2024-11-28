@@ -1,7 +1,4 @@
-import 'package:eaudelux/utils/styles/colours.dart';
-import 'package:eaudelux/utils/styles/themes.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class InventoryAppBar extends StatelessWidget {
   final Size appBarSize;
@@ -82,7 +79,7 @@ class ButtonSection extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => ExcelExporter.exportPerfumeDataToExcel(DataSample.perfumes, context),
               child: Text(
                 'Print Report',
                 style: AppTheme.whiteMediumStyle,

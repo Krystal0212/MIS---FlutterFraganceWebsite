@@ -15,152 +15,17 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
   late Size appBarSize, deviceSize, bodySize;
   late double inventoryTurnOverRatio, grossMarginROI;
 
-  double netSales = 16000; // Net Sales
-  double cogs = 2000; // Cost of Goods Sold
-  double beginningInventoryCost = 1000; // Beginning Inventory Cost
-  double endingInventoryCost = 3000; // Ending Inventory Cost
+  late double netSales; // Net Sales
 
-  final List<List<double>> importedBarData = [
-    [48, 75, 10], // x1, x2, x3
-    [45, 20, 37],
-    [44, 40, 28],
-    [41, 55, 29],
-    [30, 50, 28],
-    [50, 55, 42],
-  ];
+  double totalCogs = 0; // Cost of Goods Sold
+  double totalBeginningInventoryCost = 0; // Beginning Inventory Cost
+  double totalEndingInventoryCost = 0; // Ending Inventory Cost
 
-  List<Perfume> perfumes = [
-    Perfume(
-        name: 'Dior Sauvage',
-        sold: 44,
-        stock: 20,
-        receive: 28,
-        price: 85.0,
-        brand: Brand(name: 'Dior')),
-    Perfume(
-        name: 'Dior Homme',
-        sold: 41,
-        stock: 55,
-        receive: 29,
-        price: 95.0,
-        brand: Brand(name: 'Dior')),
-    Perfume(
-        name: 'Gucci Bloom',
-        sold: 30,
-        stock: 50,
-        receive: 28,
-        price: 75.0,
-        brand: Brand(name: 'Gucci')),
-    Perfume(
-        name: 'Gucci Guilty',
-        sold: 50,
-        stock: 55,
-        receive: 42,
-        price: 80.0,
-        brand: Brand(name: 'Gucci')),
-    Perfume(
-        name: 'Tom Ford Black Orchid',
-        sold: 0,
-        stock: 6,
-        receive: 0,
-        price: 135.0,
-        brand: Brand(name: 'Tom Ford')),
-    Perfume(
-        name: 'Tom Ford Oud Wood',
-        sold: 0,
-        stock: 9,
-        receive: 0,
-        price: 110.0,
-        brand: Brand(name: 'Tom Ford')),
-    Perfume(
-        name: 'Armani Code',
-        sold: 0,
-        stock: 14,
-        receive: 0,
-        price: 85.0,
-        brand: Brand(name: 'Armani')),
-    Perfume(
-        name: 'Armani Si',
-        sold: 0,
-        stock: 10,
-        receive: 0,
-        price: 95.0,
-        brand: Brand(name: 'Armani')),
-    Perfume(
-        name: 'Yves Saint Laurent Black Opium',
-        sold: 0,
-        stock: 20,
-        receive: 0,
-        price: 100.0,
-        brand: Brand(name: 'Yves Saint Laurent')),
-    Perfume(
-        name: 'Yves Saint Laurent Libre',
-        sold: 0,
-        stock: 11,
-        receive: 0,
-        price: 120.0,
-        brand: Brand(name: 'Yves Saint Laurent')),
-    Perfume(
-        name: 'Hermès Terre d’Hermès',
-        sold: 0,
-        stock: 5,
-        receive: 0,
-        price: 125.0,
-        brand: Brand(name: 'Hermès')),
-    Perfume(
-        name: 'Hermès Voyage d’Hermès',
-        sold: 0,
-        stock: 8,
-        receive: 0,
-        price: 115.0,
-        brand: Brand(name: 'Hermès')),
-    Perfume(
-        name: 'Versace Eros',
-        sold: 0,
-        stock: 16,
-        receive: 0,
-        price: 90.0,
-        brand: Brand(name: 'Versace')),
-    Perfume(
-        name: 'Versace Bright Crystal',
-        sold: 0,
-        stock: 13,
-        receive: 0,
-        price: 75.0,
-        brand: Brand(name: 'Versace')),
-    Perfume(
-        name: 'Prada Candy',
-        sold: 0,
-        stock: 10,
-        receive: 0,
-        price: 70.0,
-        brand: Brand(name: 'Prada')),
-    Perfume(
-        name: 'Prada L’Homme',
-        sold: 0,
-        stock: 12,
-        receive: 0,
-        price: 95.0,
-        brand: Brand(name: 'Prada')),
-    Perfume(
-        name: 'Burberry Her',
-        sold: 0,
-        stock: 9,
-        receive: 0,
-        price: 85.0,
-        brand: Brand(name: 'Burberry')),
-    Perfume(
-        name: 'Burberry Brit',
-        sold: 0,
-        stock: 7,
-        receive: 0,
-        price: 80.0,
-        brand: Brand(name: 'Burberry')),
-  ];
-
+  late List<Perfume> perfumes;
   @override
   void initState() {
     super.initState();
+    perfumes = DataSample.getPerfumes();
   }
 
   @override
@@ -171,14 +36,25 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     appBarSize = Size(deviceWidth, deviceHeight * 0.1);
     bodySize = Size(deviceWidth, deviceHeight * 0.9);
 
-    // inventoryTurnOverRatio = 0.8;
-    // grossMarginROI = 32000.0;
+    netSales = calculateNetSales(perfumes);
 
-    double avgInventoryCost =
-        caculateAVGInventory(beginningInventoryCost, endingInventoryCost);
+    for (var perfume in perfumes) {
+      totalCogs += perfume.cogs;
+      totalBeginningInventoryCost += perfume.beginningInventoryCost;
+      totalEndingInventoryCost += perfume.endingInventoryCost;
+    }
+
+    double avgCost = caculateAVGInventory(
+        totalBeginningInventoryCost, totalEndingInventoryCost);
+
     inventoryTurnOverRatio =
-        calculateInventoryTurnoverRatio(cogs, avgInventoryCost);
-    grossMarginROI = calculateGMROI(netSales, cogs, avgInventoryCost);
+        calculateInventoryTurnoverRatio(totalCogs, avgCost);
+    grossMarginROI = calculateGMROI(netSales, totalCogs, avgCost);
+  }
+
+  double calculateNetSales(List<Perfume> perfumes) {
+    return perfumes.fold(
+        0.0, (sum, perfume) => sum + (perfume.sold * perfume.price));
   }
 
   double caculateAVGInventory(
@@ -192,9 +68,10 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
 
   double calculateGMROI(
       double netSales, double cogs, double averageInventoryCost) {
+
     // Calculate Gross Margin/Average Inventory and return GMROI
     double result = (averageInventoryCost > 0)
-        ? ((netSales - cogs) / averageInventoryCost).roundToDouble()
+        ? double.parse(((netSales - cogs) / averageInventoryCost).toStringAsFixed(2))
         : 0.0;
 
     return result;
@@ -274,7 +151,9 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
                   SizedBox(height: deviceHeight * 0.01),
                   Expanded(
                     flex: 9,
-                    child: BarChartSection(perfumes: perfumes,),
+                    child: BarChartSection(
+                      perfumes: perfumes,
+                    ),
                   ),
                 ],
               ),

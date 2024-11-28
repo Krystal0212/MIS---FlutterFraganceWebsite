@@ -49,6 +49,15 @@ class AppTheme {
       fontWeight: FontWeight.w800,
       letterSpacing: 0.60);
 
+  static TextStyle get sliverDefaultStyle => TextStyle(
+      fontSize: 35, fontWeight: FontWeight.bold, color: AppTheme.black);
+
+  static TextStyle get sliverButtonDefaultStyle =>
+      TextStyle(fontSize: 20, color: AppTheme.black);
+
+  static TextStyle get dangerTextStyle => const TextStyle(
+      fontSize: 35, fontWeight: FontWeight.bold, color: AppColors.bethlehemRed);
+
   //ToDo: InputDecoration
   static InputDecoration get searchInputDecoration => InputDecoration(
         suffixIcon: const Icon(Icons.search), // Leading search icon
@@ -130,6 +139,22 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         iconColor: black,
+      );
+
+  static ButtonStyle get sliverTextButtonStyle => TextButton.styleFrom(
+      backgroundColor: AppTheme.white,
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: AppTheme.black, width: 1),
+          borderRadius: BorderRadius.circular(10)));
+
+  static ButtonStyle get defaultStyle => TextButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        side: BorderSide(
+          color: AppTheme.black,
+          width: 1,
+        ),
+        foregroundColor: AppColors.endindNavyBlue,
+        backgroundColor: AppTheme.primary.withOpacity(0.75),
       );
 
   //ToDo: BoxDecoration

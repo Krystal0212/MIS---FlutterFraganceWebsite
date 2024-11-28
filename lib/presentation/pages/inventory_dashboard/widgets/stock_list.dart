@@ -1,3 +1,4 @@
+import 'package:eaudelux/presentation/pages/product_detail/product_detail.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 import 'package:flutter/foundation.dart';
 
@@ -13,7 +14,7 @@ class StockDataList extends StatefulWidget {
 class _StockDataListState extends State<StockDataList> {
   final List<bool> _expandedPanels = [];
   late List<Perfume> perfumes;
-  late List<Brand> brands;
+  late List<String> brands;
 
   @override
   void initState() {
@@ -21,7 +22,7 @@ class _StockDataListState extends State<StockDataList> {
     // Initialize all panels as collapsed
 
     perfumes = widget.perfumes;
-    brands = perfumes.map((perfume) => perfume.brand).toSet().toList();
+    brands = perfumes.map((perfume) => perfume.brand.name).toSet().toList();
 
     _expandedPanels.addAll(List.generate(brands.length, (index) => false));
   }
@@ -34,21 +35,19 @@ class _StockDataListState extends State<StockDataList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap:
-          true, // Important: allows the ListView to shrink-wrap its content
-
+      shrinkWrap: true,
       padding: AppPaddings.defaultPadding,
       itemCount: brands.length,
       itemBuilder: (BuildContext context, int index) {
-        final brand = brands[index];
+        final brandName = brands[index];
 
         // Filter perfumes by brand
         final brandPerfumes =
-            perfumes.where((perfume) => perfume.brand == brand).toList();
+            perfumes.where((perfume) => perfume.brand.name == brandName).toList();
 
         return ExpansionTile(
           title: Text(
-            brand.name,
+            brandName,
             style: AppTheme.brandStyle,
           ),
           children: brandPerfumes.isNotEmpty
@@ -89,12 +88,12 @@ class ItemTile extends StatelessWidget {
             if (kDebugMode) {
               print('Item tapped: ${perfume.name}');
             }
-            // Navigator.push(
-            // context,
-            // MaterialPageRoute(
-            // builder: (context) => PerfumeDetailPage(perfume: perfume), // Replace with your target page
-            // ),
-            // );
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => const ProductDetailPage(), // Replace with your target page
+            ),
+            );
           },
           child: ListTile(
             title: Text(perfume.name, style: AppTheme.itemNameStyle),
@@ -106,24 +105,75 @@ class ItemTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (perfume.stock < lowStockThreshold)
-                  const Tooltip(
+                  Tooltip(
                     message: 'Stock is low!',
-                    child: Icon(
-                      Icons.warning,
-                      color: AppColors.corona,
+                    child: IconButton(
+                      icon: const Icon(Icons.warning, color: AppColors.corona),
+                      onPressed: () {
+                        _showRestockDialog(context, perfume);
+                      },
                     ),
                   ),
-
                 const SizedBox(width: 10),
-
                 Text('\$${perfume.price.toStringAsFixed(2)}',
                     style: AppTheme.itemStyle),
-                
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _showRestockDialog(BuildContext context, Perfume perfume) {
+    final TextEditingController quantityController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Low Stock Alert'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Stock for "${perfume.name}" is low!'),
+              Text('Current stock: ${perfume.stock}'),
+              const Text('Enter the quantity you want to restock if you want to send a restock request:'),
+              TextField(
+                controller: quantityController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(hintText: 'Quantity'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                final quantity = int.tryParse(quantityController.text);
+                if (quantity != null && quantity > 0) {
+                  // Here you would send the restock request (e.g., via a service or API)
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Restock request for $quantity units sent!')),
+                  );
+                  Navigator.of(context).pop(); // Close the dialog
+                } else {
+                  // If the input is invalid, show a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid quantity')),
+                  );
+                }
+              },
+              child: const Text('Send Request'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

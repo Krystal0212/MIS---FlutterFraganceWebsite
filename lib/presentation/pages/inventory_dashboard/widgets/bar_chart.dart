@@ -9,7 +9,6 @@ class BarChartSection extends StatefulWidget {
   final Color normal = AppColors.tianLanSky;
   final Color light = AppColors.icyLandscape;
 
-
   @override
   State<StatefulWidget> createState() => BarChartSectionState();
 }
@@ -37,7 +36,7 @@ class BarChartSectionState extends State<BarChartSection> {
 
     List<Perfume> topSellingPerfumes = getTopSellingPerfumes(widget.perfumes);
 
-    bottomLabels = topSellingPerfumes.map((perfume) => perfume.name).toList();
+    bottomLabels = topSellingPerfumes.map((perfume) => perfume.name).toSet().toList();
     importedBarData = topSellingPerfumes.map((perfume) => [perfume.sold, perfume.stock, perfume.receive]).toList();
 
     barData = transformToCumulative(importedBarData);
@@ -125,7 +124,7 @@ class BarChartSectionState extends State<BarChartSection> {
               padding: const EdgeInsets.only(top: 16),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final barsSpace = 30.0 * constraints.maxWidth / 400;
+                  final barsSpace = 40.0 * constraints.maxWidth / 400;
                   final barsWidth = 25.0 * constraints.maxWidth / 400;
                   return BarChart(
                     BarChartData(
