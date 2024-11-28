@@ -198,11 +198,11 @@ class CustomViewListTile extends StatelessWidget {
                   imgWidth: 70,
                   imgHeight: 70,
                 ),
-                TileContext(
+                ViewTileContext(
                   prodName: order['pName']!,
                   prodSize: order['pSize']!,
                 ),
-                ViewTileActivity(
+                ViewTilePricing(
                   prodPrice: double.parse(order['pPrice']!),
                   prodQuantity: int.parse(order['pQuantity']!),
                 )
@@ -216,11 +216,11 @@ class CustomViewListTile extends StatelessWidget {
 }
 
 
-class ViewTileActivity extends StatelessWidget {
+class ViewTilePricing extends StatelessWidget {
   final int prodQuantity;
   final double prodPrice;
 
-  const ViewTileActivity({
+  const ViewTilePricing({
     super.key,
     required this.prodPrice,
     required this.prodQuantity
@@ -239,6 +239,41 @@ class ViewTileActivity extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ViewTileContext extends StatelessWidget {
+  final String prodName, prodSize;
+
+  const ViewTileContext({
+    super.key,
+    required this.prodName,
+    required this.prodSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Text(
+                prodName,
+                style: AppTheme.tileHeader,
+              ),
+            ),
+            const SizedBox(width: 15,),
+            Expanded(
+              flex: 3,
+              child: Text(
+                "Size: $prodSize",
+                style: AppTheme.tileSubString,
+              ),
+            ),
+          ],
+        )
     );
   }
 }

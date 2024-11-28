@@ -1,8 +1,6 @@
-import 'package:eaudelux/presentation/dialogs/showDialog.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/order_list.dart';
 import '../widgets/widgets.dart';
 
 import '../../utils/SharedPreferences/shared_preferences.dart';

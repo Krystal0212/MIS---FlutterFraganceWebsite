@@ -1,4 +1,4 @@
-import 'package:eaudelux/presentation/widgets/appbar.dart';
+import '../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
