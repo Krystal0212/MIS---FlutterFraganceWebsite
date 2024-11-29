@@ -16,6 +16,8 @@ class _OrderPageState extends State<OrderPage> {
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
 
+
+
   final ValueNotifier<List<Map<String, String>>> orderListNotifier =
         ValueNotifier<List<Map<String, String>>>([
           {
@@ -111,6 +113,15 @@ class _OrderPageState extends State<OrderPage> {
 }
 
 void orderDialog(BuildContext context, List<Map<String, String>> orders) {
+  final TextEditingController nameController =
+  TextEditingController();
+  final TextEditingController phoneController =
+  TextEditingController();
+  final TextEditingController addressController =
+  TextEditingController();
+  final TextEditingController emailController =
+  TextEditingController();
+
   showDialog(
     context: context,
     builder: (context) {
@@ -120,26 +131,27 @@ void orderDialog(BuildContext context, List<Map<String, String>> orders) {
         ),
         child: Container(
           padding: const EdgeInsets.all(16),
-          width: 380,
-          height: 220,
+          width: 800,
+          height: 500,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Successfully',
+                'Before Purchasing',
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 15),
-              const Expanded(
-                child: Text(
-                    'You have purchased products successfully',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                  fontSize: 20,
-                ),
+              Expanded(
+                child: Column(
+                  children: [
+                    TitleWithTextBox(title: 'Name:',controller: nameController,),
+                    TitleWithTextBox(title: 'Address:',controller: addressController,),
+                    TitleWithTextBox(title: 'Phone Number:',controller: phoneController,),
+                    TitleWithTextBox(title: 'Email:',controller: emailController,),
+                  ],
                 )
               ),
               const SizedBox(height: 15),
@@ -149,7 +161,7 @@ void orderDialog(BuildContext context, List<Map<String, String>> orders) {
                 },
                 style: AppTheme.defaultStyle,
                 child: Text(
-                  'close',
+                  'Confirm',
                   style: AppTheme.whiteMediumStyle,
                 ),
               ),
@@ -161,7 +173,15 @@ void orderDialog(BuildContext context, List<Map<String, String>> orders) {
   );
 }
 
-
+/*
+* Text(
+    'You have purchased products successfully',
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+    ),
+  )
+* */
 
 
 

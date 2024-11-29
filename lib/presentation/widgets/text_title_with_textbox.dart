@@ -21,7 +21,7 @@ class TitleWithTextBox extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold
               ),
             ),
@@ -31,7 +31,13 @@ class TitleWithTextBox extends StatelessWidget {
             child: TextField(
               controller: controller,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  gapPadding: 2
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 3.0,
+                  horizontal: 3.0,
+                ),
                 hintText: 'Enter here',
               ),
             ),
