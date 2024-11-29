@@ -6,6 +6,7 @@ class Defect {
   String defectDate;
   String defectCase;
   String? fromBranch;
+  String? solution;
   bool defectResolved; // Whether defect has been resolved
 
   Defect({
@@ -14,6 +15,7 @@ class Defect {
     required this.defectResolved,
     required this.defectCase,
     required this.defectDate,
+    this.solution,
     this.fromBranch,
   });
 
@@ -24,6 +26,7 @@ class Defect {
       'defectResolved': defectResolved,
       'defectCase': defectCase,
       'defectDate': defectDate,
+      'solution': solution,
       'fromBranch': fromBranch,
     };
   }
@@ -35,7 +38,13 @@ class Defect {
       defectResolved: map['defectResolved'],
       defectCase: map['defectCase'],
       defectDate: map['defectDate'],
+      solution: map['solution'],
       fromBranch: map['fromBranch'],
     );
+  }
+
+  void resolveDefect(String solution) {
+    defectResolved = true;
+    this.solution = solution;
   }
 }

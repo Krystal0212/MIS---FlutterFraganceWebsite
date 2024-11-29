@@ -195,6 +195,19 @@ class AppTheme {
         ),
       );
 
+  static BoxDecoration get defaultBoxDecoration => BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      );
+
   //ToDo: Theme
   static final ThemeData lightTheme = ThemeData(
     primaryColor: primary,

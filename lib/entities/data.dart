@@ -1,7 +1,7 @@
 import 'package:eaudelux/entities/branch.dart';
 import 'package:eaudelux/entities/defect.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
-import 'package:eaudelux/presentation/widgets/restock_request.dart';
+import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_request.dart';
 
 class DataSample {
   static const String urlDiorSauvage =
@@ -40,12 +40,6 @@ class DataSample {
       "https://theperfume.vn/wp-content/uploads/2018/11/nuoc-hoa-burberry-her-eau-de-parfum-e1669705415981-340x340.png";
   static const String urlBurberryBrit =
       "https://theperfume.vn/wp-content/uploads/2017/11/Burberry-Brit-For-Her-5-e1673017491973-340x340.jpg";
-
-  static List<String> roles = [
-    'Operation Director',
-    'Operation Manager',
-    'Operation Staff'
-  ];
 
   static List<RestockRequest> request = [
     RestockRequest(
@@ -320,6 +314,13 @@ class DataSample {
 
     return ['ml', 'oz'];
   }
+
+  
+  static List<String> roles = [
+    'Operation Director',
+    'Operation Manager',
+    'Operation Staff'
+  ];
 
   static String getRole(int index) => roles[index];
 }

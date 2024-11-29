@@ -26,7 +26,7 @@ class InventoryAppBar extends StatelessWidget {
         children: [
           ButtonSection(
               height: appBarSize.height, width: appBarSize.width * 0.35, brands: brands, sizeTypes: sizeTypes, role: role),
-          Text('Inventory Dashboard',
+          Text(role == 'Operation Staff' ? 'Update Order Status':'Inventory Dashboard',
               style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
           SizedBox(
             width: appBarSize.width * 0.35,

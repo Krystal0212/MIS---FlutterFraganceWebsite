@@ -1,6 +1,9 @@
+import 'package:eaudelux/presentation/pages/delivery_detail/delivery_detail.dart';
+import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/defect_list.dart';
+import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/delivery_box.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
-import 'package:eaudelux/presentation/widgets/restock_request.dart';
-import 'package:eaudelux/services/request.dart';
+import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_request.dart';
+import 'package:flutter/foundation.dart';
 
 class InventoryDashboard extends StatefulWidget {
   const InventoryDashboard({super.key});
@@ -26,6 +29,8 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
   double totalBeginningInventoryCost = 0; // Beginning Inventory Cost
   double totalEndingInventoryCost = 0; // Ending Inventory Cost
 
+  int requestChoice = 1;
+
   late List<Perfume> perfumes;
   @override
   void initState() {
@@ -33,7 +38,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     perfumes = DataSample.getPerfumes();
     brands = DataSample.getBrands();
     sizes = DataSample.getSizeTypes();
-    role = DataSample.getRole(0);
+    role = DataSample.getRole(2);
     request = DataSample.getRestockRequests();
   }
 
@@ -45,7 +50,8 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     appBarSize = Size(deviceWidth, deviceHeight * 0.1);
     bodySize = Size(deviceWidth, deviceHeight * 0.9);
 
-    netSales = perfumes.fold(0.0, (sum, perfume) => sum + perfume.totalProductNetSales());
+    netSales = perfumes.fold(
+        0.0, (sum, perfume) => sum + perfume.totalProductNetSales());
 
     for (var perfume in perfumes) {
       totalCogs += perfume.totalProductCogs;
@@ -91,7 +97,8 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
               brands: brands,
               sizeTypes: sizes,
               role: role)),
-      body: Container(
+      body: (role == 'Operation Staff') ? const UpdateOrderStatusPage() :
+      Container(
         height: bodySize.height,
         padding: AppPaddings.defaultPadding,
         color: AppColors.tropicalBreeze,
@@ -119,9 +126,9 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
                       height: bodySize.height * 0.8,
                       decoration: AppTheme.squarebBoxDecoration,
                       child: StockDataList(
-                                                perfumes: perfumes,
-                                                role: role,
-                                              ),
+                        perfumes: perfumes,
+                        role: role,
+                      ),
                     ),
                   ],
                 ),
@@ -145,17 +152,22 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
                         role: role,
                         brands: brands,
                         sizeTypes: sizes,
+                        requestChoice: requestChoice,
+                        onRequestChoiceChanged: (newRequestChoice) {
+                          setState(() {
+                            requestChoice = newRequestChoice;
+                          });
+                        },
                       )),
                   SizedBox(height: deviceHeight * 0.01),
                   Expanded(
                     flex: 9,
-                    child: (role == 'Operation Manager')
-                        ? RestockRequestList(
-                            restockRequests: request,
-                          )
-                        : BarChartSection(
-                            perfumes: perfumes,
-                          ),
+                    child: DashboardTask(
+                      request: request,
+                      role: role,
+                      perfumes: perfumes,
+                      requestChoice: requestChoice,
+                    ),
                   ),
                 ],
               ),
@@ -189,39 +201,53 @@ class InfoBox extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class DashboardBox extends StatelessWidget {
+class DashboardBox extends StatefulWidget {
   final List<String> brands, sizeTypes;
   final double inventoryTurnOverRatio, grossMarginROI, deviceWidth;
   final String role;
-  late Widget dashboardBox;
+  int requestChoice;
+  final Function(int) onRequestChoiceChanged;
 
-  DashboardBox(
-      {super.key,
-      required this.inventoryTurnOverRatio,
-      required this.grossMarginROI,
-      required this.deviceWidth,
-      required this.role,
-      required this.brands,
-      required this.sizeTypes});
+  DashboardBox({
+    super.key,
+    required this.inventoryTurnOverRatio,
+    required this.grossMarginROI,
+    required this.deviceWidth,
+    required this.role,
+    required this.brands,
+    required this.sizeTypes,
+    required this.requestChoice,
+    required this.onRequestChoiceChanged,
+  });
+
+  @override
+  State<DashboardBox> createState() => _DashboardBoxState();
+}
+
+class _DashboardBoxState extends State<DashboardBox> {
+  late Widget dashboardBox;
 
   @override
   Widget build(BuildContext context) {
-    switch (role) {
+    if (kDebugMode) {
+      print(widget.requestChoice);
+    }
+    switch (widget.role) {
       case ('Operation Director'):
         dashboardBox = Row(
           children: [
             Expanded(
               flex: 1,
               child: InfoBox(
-                value: '$inventoryTurnOverRatio%',
+                value: '${widget.inventoryTurnOverRatio}%',
                 label: 'Inventory turnover ratio',
               ),
             ),
-            SizedBox(width: deviceWidth * 0.01),
+            SizedBox(width: widget.deviceWidth * 0.01),
             Expanded(
               flex: 1,
               child: InfoBox(
-                value: '\$$grossMarginROI K',
+                value: '\$${widget.grossMarginROI} K',
                 label: 'Gross Margin ROI',
               ),
             )
@@ -235,31 +261,21 @@ class DashboardBox extends StatelessWidget {
             ElevatedButton(
               style: AppTheme.navigationLogoButtonStyle,
               onPressed: () {
-                // Call the dialog function when the button is pressed
+                widget.onRequestChoiceChanged(1);
               },
-              child: Text('Import Product', style: AppTheme.brandStyle),
+              child: Text('Delivery Product', style: AppTheme.brandStyle),
             ),
             ElevatedButton(
               style: AppTheme.navigationLogoButtonStyle,
               onPressed: () {
-                // Call the dialog function when the button is pressed
-                AppRequest.showImportDialog(
-                  context,
-                  brands,
-                  sizeTypes,
-                );
+                widget.onRequestChoiceChanged(2);
               },
               child: Text('Check Request', style: AppTheme.brandStyle),
             ),
             ElevatedButton(
               style: AppTheme.navigationLogoButtonStyle,
               onPressed: () {
-                // Call the dialog function when the button is pressed
-                AppRequest.showImportDialog(
-                  context,
-                  brands,
-                  sizeTypes,
-                );
+                widget.onRequestChoiceChanged(3);
               },
               child: Text('Check Defect', style: AppTheme.brandStyle),
             ),
@@ -272,7 +288,7 @@ class DashboardBox extends StatelessWidget {
             Expanded(
               flex: 1,
               child: InfoBox(
-                value: '$inventoryTurnOverRatio%',
+                value: '${widget.inventoryTurnOverRatio}%',
                 label: 'Inventory turnover ratio',
               ),
             )
@@ -283,5 +299,46 @@ class DashboardBox extends StatelessWidget {
         dashboardBox = Container();
     }
     return dashboardBox;
+  }
+}
+
+// ignore: must_be_immutable
+class DashboardTask extends StatelessWidget {
+  final String role;
+  final List<Perfume> perfumes;
+  final List<RestockRequest> request;
+  int requestChoice;
+
+  DashboardTask(
+      {super.key,
+      required this.role,
+      required this.perfumes,
+      required this.request,
+      required this.requestChoice});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (role) {
+      case 'Operation Director':
+        return BarChartSection(
+          perfumes: perfumes,
+        );
+      case 'Operation Manager':
+        switch (requestChoice) {
+          case 1:
+            return const DeliveryBox();
+          case 2:
+            return RestockRequestList(
+              restockRequests: request,
+            );
+          case 3:
+            return DefectList(defects: perfumes[0].defects ?? []);
+          default:
+            return Container();
+        }
+
+      default:
+        return Container();
+    }
   }
 }

@@ -1,10 +1,10 @@
-// ignore: avoid_web_libraries_in_flutter
+// ignore_for_file: unused_local_variable, avoid_web_libraries_in_flutter
+
 import 'dart:html' as html;
 
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:typed_data';
 
 class ExcelExporter {
   // Function to export perfume data to an Excel file
