@@ -87,6 +87,8 @@ class AppColors {
 
   static const Color foundationWhite = Color(0xFFF1F1FE);
 
+  static const Color citrusSplash = Color(0xFFFFC300);
+
   static const Color white = Color(0xFFFFFFFF); // Highest luminance (brightest)
 
   static const Color monstrousGreen = Color(0xFF18CE0F);
@@ -100,6 +102,8 @@ class AppColors {
   static const Color blueDeFrance = Color(0xFF2F80ED);
 
   static const Color lacqueredLiquorice = Color(0xFF383838);
+
+  static const Color brightLightGreen = Color(0xFF3BFF49);
 
   static const Color purpleShade = Color(0xFF4D2952);
 
@@ -122,6 +126,8 @@ class AppColors {
   static const Color azukiRed = Color(0xFF6A2626);
 
   static const Color heisenbergBlue = Color(0xFF6DD5FA);
+
+  static const Color akihabaraArcade = Color(0xFF6E1BFF);
 
   static const Color cabbageBlossomViolet = Color(0xFF764B7C);
 

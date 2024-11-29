@@ -1,5 +1,6 @@
 import 'package:eaudelux/entities/branch.dart';
 import 'package:eaudelux/entities/defect.dart';
+import 'package:eaudelux/presentation/pages/widgets/full_pie_chart.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_request.dart';
 
@@ -72,23 +73,23 @@ class DataSample {
             'A bold, fresh, and earthy fragrance that combines the ruggedness of the wild with refined elegance. With notes of bergamot, pepper, and ambroxan, Dior Sauvage offers a timeless scent for confident men.',
         branchData: {
           "A": BranchPerfumeData(
-      sold: [12, 0, 0], // Ensure length = 3
-      storage: [10, 0, 0], // Ensure length = 3
-      sizes: [95.0, 0, 0], // Ensure length = 3
-      isShippingFromStock: [12, 0, 0], // Ensure length = 3
-    ),
-    "B": BranchPerfumeData(
-      sold: [20, 0, 0],
-      storage: [2, 0, 0],
-      sizes: [95.0, 0, 0],
-      isShippingFromStock: [12, 0, 0],
-    ),
-    "C": BranchPerfumeData(
-      sold: [12, 0, 0],
-      storage: [10, 0, 0],
-      sizes: [95.0, 0, 0],
-      isShippingFromStock: [12, 0, 0],
-    ),
+            sold: [12, 0, 0], // Ensure length = 3
+            storage: [10, 0, 0], // Ensure length = 3
+            sizes: [95.0, 0, 0], // Ensure length = 3
+            isShippingFromStock: [12, 0, 0], // Ensure length = 3
+          ),
+          "B": BranchPerfumeData(
+            sold: [20, 0, 0],
+            storage: [2, 0, 0],
+            sizes: [95.0, 0, 0],
+            isShippingFromStock: [12, 0, 0],
+          ),
+          "C": BranchPerfumeData(
+            sold: [12, 0, 0],
+            storage: [10, 0, 0],
+            sizes: [95.0, 0, 0],
+            isShippingFromStock: [12, 0, 0],
+          ),
         },
         imageUrl: urlDiorSauvage,
         receiveFromBrand: [10, 5, 5],
@@ -121,23 +122,23 @@ class DataSample {
       imageUrl: urlDiorHomme,
       branchData: {
         "A": BranchPerfumeData(
-      sold: [12, 0, 0], // Ensure length = 3
-      storage: [10, 0, 0], // Ensure length = 3
-      sizes: [95.0, 0, 0], // Ensure length = 3
-      isShippingFromStock: [12, 0, 0], // Ensure length = 3
-    ),
-    "B": BranchPerfumeData(
-      sold: [20, 0, 0],
-      storage: [2, 0, 0],
-      sizes: [95.0, 0, 0],
-      isShippingFromStock: [12, 0, 0],
-    ),
-    "C": BranchPerfumeData(
-      sold: [12, 0, 0],
-      storage: [10, 0, 0],
-      sizes: [95.0, 0, 0],
-      isShippingFromStock: [12, 0, 0],
-    ),
+          sold: [12, 0, 0], // Ensure length = 3
+          storage: [10, 0, 0], // Ensure length = 3
+          sizes: [95.0, 0, 0], // Ensure length = 3
+          isShippingFromStock: [12, 0, 0], // Ensure length = 3
+        ),
+        "B": BranchPerfumeData(
+          sold: [20, 0, 0],
+          storage: [2, 0, 0],
+          sizes: [95.0, 0, 0],
+          isShippingFromStock: [12, 0, 0],
+        ),
+        "C": BranchPerfumeData(
+          sold: [12, 0, 0],
+          storage: [10, 0, 0],
+          sizes: [95.0, 0, 0],
+          isShippingFromStock: [12, 0, 0],
+        ),
       },
       receiveFromBrand: [0, 0, 2],
     ),
@@ -298,6 +299,70 @@ class DataSample {
     ),
   ];
 
+  Map<String, double> genderRatioData = {'male': 60, 'female': 40};
+
+static List<PieChartDataModel> getGenderData(
+    Map<String, double> genderRatioData) {
+  return genderRatioData.entries.map((e) {
+    return PieChartDataModel(
+      value: e.value,
+      color: e.key.toLowerCase() == 'male' ? AppColors.blueDeFrance : AppColors.pinkSpyro,
+      title: '${e.value}%',
+      iconPath: e.key.toLowerCase() == 'male'
+          ? 'assets/icons/pngs/man.png'
+          : 'assets/icons/pngs/woman.png',
+    );
+  }).toList();
+}
+
+  Map<String, double> ageGroupData = {
+  '18-25': 30,
+  '26-35': 40,
+  '36-45': 20,
+  '46+': 10
+};
+
+  static List<PieChartDataModel> getAgeGroupData(Map<String, double> ageGroupData) {
+  return ageGroupData.entries.map((e) {
+    return PieChartDataModel(
+      value: e.value,
+      color: _getAgeGroupColor(e.key),
+      title: '${e.value}%',
+      iconPath: _getAgeGroupIcon(e.key),
+    );
+  }).toList();
+}
+
+static Color _getAgeGroupColor(String ageGroup) {
+  switch (ageGroup) {
+    case '18-25':
+      return AppColors.karimunBlue; // Example color for age group 18-25
+    case '26-35':
+      return AppColors.brightLightGreen; // Example color for age group 26-35
+    case '36-45':
+      return AppColors.circus; // Example color for age group 36-45
+    case '46+':
+      return AppColors.bethlehemRed; // Example color for age group 46+
+    default:
+      return AppColors.goshawkGrey; // Default color if age group is unknown
+  }
+}
+
+static String _getAgeGroupIcon(String ageGroup) {
+  switch (ageGroup) {
+    case '18-25':
+      return 'assets/icons/pngs/young_adult.png'; // Replace with an appropriate icon for young adults
+    case '26-35':
+      return 'assets/icons/pngs/adult.png'; // Replace with an appropriate icon for adults
+    case '36-45':
+      return 'assets/icons/pngs/mature_adult.png'; // Replace with an appropriate icon for mature adults
+    case '46+':
+      return 'assets/icons/pngs/senior.png'; // Replace with an appropriate icon for seniors
+    default:
+      return 'assets/icons/pngs/default.png'; // Default icon if the group is unknown
+  }
+}
+
   static List<Perfume> getPerfumes() {
     return perfumes;
   }
@@ -311,16 +376,22 @@ class DataSample {
   }
 
   static List<String> getSizeTypes() {
-
     return ['ml', 'oz'];
   }
 
-  
-  static List<String> roles = [
+  static List<String> inventoryRoles = [
     'Operation Director',
     'Operation Manager',
     'Operation Staff'
   ];
 
-  static String getRole(int index) => roles[index];
+  static String getInventoryRole(int index) => inventoryRoles[index];
+
+  static List<String> salesRoles = [
+    'Sales Director',
+    'Sales Manager',
+    'Sales Staff'
+  ];
+
+  static String getSalesRole(int index) => salesRoles[index];
 }

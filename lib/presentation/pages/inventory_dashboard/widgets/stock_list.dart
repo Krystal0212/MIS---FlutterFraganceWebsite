@@ -1,4 +1,4 @@
-import 'package:eaudelux/presentation/pages/product_detail/product_detail.dart';
+import 'package:eaudelux/presentation/pages/inventory_management/product_detail.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 import 'package:eaudelux/services/request.dart';
 import 'package:flutter/foundation.dart';
@@ -112,6 +112,7 @@ class ItemTile extends StatelessWidget {
               children: [
                 Text('Stock: ${perfume.totalUnitInStock}',
                     style: AppTheme.itemStyle),
+                (role == 'Operation Director') ? Container() :
                 Tooltip(
                     message: 'Update',
                     child: IconButton(
@@ -121,6 +122,7 @@ class ItemTile extends StatelessWidget {
                       },
                     ),
                   ),
+                  (role == 'Operation Director') ? Container() :
                 Tooltip(
                     message: 'Disable',
                     child: IconButton(
