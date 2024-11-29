@@ -5,6 +5,7 @@ export 'floating_sliver_title.dart';
 export 'text_navigator_button.dart';
 export 'sliver_button.dart';
 export 'text_title_with_textbox.dart';
+export 'custom_animation_switcher.dart';
 
 // Product related widgets
 export 'product_card.dart';
@@ -21,3 +22,6 @@ export 'user_data.dart';
 
 // invoice related widgets
 export 'sliver_invoice_pricing.dart';
+
+// Homepage related widgets
+export 'paging_and_page_indicator.dart';

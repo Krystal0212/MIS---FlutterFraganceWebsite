@@ -43,7 +43,7 @@ class ProductPageState extends State<ProductPage> {
       ),
       body: CustomScrollView(
         slivers: [
-          const CustomSliverTitle(title: 'Black Friday'),
+          const CustomSliverTitle(title: 'Available Fragrances'),
           ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
           CustomSliverTextButton(
               onPressed: (){},
@@ -51,7 +51,6 @@ class ProductPageState extends State<ProductPage> {
               maxWidth: 400
           ),
 
-          const CustomSliverTitle(title: 'Latest in Stock'),
           ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
           CustomSliverTextButton(
               onPressed: (){},
