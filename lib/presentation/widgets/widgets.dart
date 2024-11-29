@@ -17,6 +17,7 @@ export 'order_list.dart';
 
 // User info related widgets
 export 'user_profile_sliver_container.dart';
+export 'user_data.dart';
 
 // invoice related widgets
 export 'sliver_invoice_pricing.dart';

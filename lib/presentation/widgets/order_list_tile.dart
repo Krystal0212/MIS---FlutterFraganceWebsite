@@ -195,8 +195,8 @@ class CustomViewListTile extends StatelessWidget {
               children: [
                 TileImg(
                     imgUrl: order['pImg']!,
-                  imgWidth: 70,
-                  imgHeight: 70,
+                  imgWidth: 60,
+                  imgHeight: 60,
                 ),
                 ViewTileContext(
                   prodName: order['pName']!,

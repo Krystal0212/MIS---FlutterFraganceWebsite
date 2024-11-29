@@ -17,8 +17,8 @@ class InvoicePricingSliver extends StatelessWidget {
     double price = calculatePrice(orderList);
     return SliverToBoxAdapter(
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
         alignment: Alignment.bottomRight,
-        padding: EdgeInsets.symmetric(horizontal: maxWidth*0.25),
         child: Text(
             'Total Price: \$$price',
           style: AppTheme.dangerTextStyle,

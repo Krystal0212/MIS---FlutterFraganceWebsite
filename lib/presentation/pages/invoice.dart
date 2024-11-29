@@ -1,3 +1,5 @@
+import 'package:boxy/slivers.dart';
+import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/SharedPreferences/shared_preferences.dart';
@@ -66,22 +68,33 @@ class InvoicePageState extends State<InvoicePage> {
         preferredSize: appBarSize,
         child: CustomAppBar(appBarSize: appBarSize,),
       ),
-      body: CustomScrollView(
-        slivers: [
-          const SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            sliver: CustomSliverTitle(title: 'Invoice'),
+      body: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          width: maxWidth*0.5,
+          decoration: BoxDecoration(
+            color: AppTheme.primary.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(15)
           ),
-          ViewOrderList(
-            orderList: orderList,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
+          child: CustomScrollView(
+            slivers: [
+              const SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                sliver: CustomSliverTitle(title: 'Invoice'),
+              ),
+              Userdata(maxWidth: maxWidth),
+              ViewOrderList(
+                orderList: orderList,
+                maxWidth: maxWidth,
+                maxHeight: maxHeight,
+              ),
+              InvoicePricingSliver(
+                orderList: orderList,
+                maxWidth: maxWidth,
+              ),
+            ],
           ),
-          InvoicePricingSliver(
-            orderList: orderList,
-            maxWidth: maxWidth,
-          )
-        ],
+        ),
       ),
     );
   }

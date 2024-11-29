@@ -55,16 +55,13 @@ class ViewOrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: maxWidth*0.25),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate((context, index){
-          final order = orderList[index];
-          return CustomViewListTile(
-            order: order,
-          );
-        }, childCount: orderList.length),
-      ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index){
+        final order = orderList[index];
+        return CustomViewListTile(
+          order: order,
+        );
+      }, childCount: orderList.length),
     );
   }
 }
