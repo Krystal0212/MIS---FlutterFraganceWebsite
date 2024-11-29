@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
+import 'package:eaudelux/services/request.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Perfume perfume;
+  final String role;
 
-  const ProductDetailPage({super.key, required this.perfume});
+  const ProductDetailPage({super.key, required this.perfume, required this.role});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -15,15 +17,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   late Size appBarSize;
   late Perfume perfume;
 
-  late String imgLink;
+  late String imgLink, role;
 
   late List<Map<String, String>> prodCategories;
   late List<String> prodBadges;
   late Map<String, String> prodDescriptions;
 
+  late List<String> brands, sizeTypes;
+
   @override
   void initState() {
     super.initState();
+    brands = DataSample.getBrands();
+    sizeTypes = DataSample.getSizeTypes();
+    role = widget.role;
   }
 
   @override
@@ -38,21 +45,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     perfume = widget.perfume;
 
-    imgLink = perfume.imageUrl;
-    String typeSize = perfume.sizeType.toString();
-
+    prodCategories = [];
     for (int index = 0; index < perfume.sizes.length; index++) {
       prodCategories.add({
-        'size': '${perfume.sizes[index]} $typeSize',
+        'category': perfume.sizes[index].toString(),
         'price': '\$${perfume.price[index]}',
       });
     }
 
     prodBadges = ['Unisex', 'Extrait de Parfum'];
-    prodDescriptions = {
-      'brandInfo': 'This is brand Information',
-      'prodDesc': 'This is product description'
-    };
   }
 
   @override
@@ -65,7 +66,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size(appBarSize.width, appBarSize.height),
-            child: InventoryAppBar(appBarSize: appBarSize)),
+            child: InventoryAppBar(appBarSize: appBarSize, brands:brands, sizeTypes: sizeTypes, role: role)),
         body: CustomScrollView(
           slivers: [
             ProductGeneralPlaceholder(
@@ -74,6 +75,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               maxHeight: maxHeight * 0.6,
               prodCategories: prodCategories,
               prodBadges: prodBadges,
+              perfume: perfume,
             ),
           ],
         ));
@@ -85,6 +87,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
   final double maxWidth, maxHeight;
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
+  final Perfume perfume;
 
   const ProductGeneralPlaceholder({
     super.key,
@@ -93,6 +96,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     required this.maxHeight,
     required this.prodCategories,
     required this.prodBadges,
+    required this.perfume,
   });
 
   @override
@@ -109,6 +113,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
               ProductImage(imgUrl: imgUrl),
               const SizedBox(width: 50),
               ProductDetailPlaceholder(
+                perfume: perfume,
                 prodCategories: prodCategories,
                 prodBadges: prodBadges,
               ),
@@ -123,15 +128,20 @@ class ProductGeneralPlaceholder extends StatelessWidget {
 class ProductDetailPlaceholder extends StatelessWidget {
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
+  final Perfume perfume;
 
   const ProductDetailPlaceholder(
-      {super.key, required this.prodCategories, required this.prodBadges});
+      {super.key,
+      required this.prodCategories,
+      required this.prodBadges,
+      required this.perfume});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(maxWidth: 600), // Limit width
       child: ProductData(
+        perfume: perfume,
         prodCategories: prodCategories,
         prodBadges: prodBadges,
       ),
@@ -204,9 +214,13 @@ class ProductImage extends StatelessWidget {
 class ProductData extends StatefulWidget {
   final List<String> prodBadges;
   final List<Map<String, String>> prodCategories;
+  final Perfume perfume;
 
   const ProductData(
-      {super.key, required this.prodBadges, required this.prodCategories});
+      {super.key,
+      required this.prodBadges,
+      required this.prodCategories,
+      required this.perfume});
 
   @override
   State<ProductData> createState() => _ProductDataState();
@@ -252,7 +266,7 @@ class _ProductDataState extends State<ProductData> {
               }).toList(),
             ),
             Text(
-              "Product's name",
+              widget.perfume.name,
               style: TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.bold,
@@ -262,7 +276,7 @@ class _ProductDataState extends State<ProductData> {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
+                widget.perfume.description,
                 style: TextStyle(fontSize: 25, color: AppTheme.black),
               ),
             ),
@@ -312,7 +326,9 @@ class _ProductDataState extends State<ProductData> {
               ),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppRequest.showRestockDialog(context, widget.perfume, false);
+                },
                 style: AppTheme.defaultStyle,
                 child: Text(
                   'Send Restock Request',

@@ -3,6 +3,8 @@ import 'dart:ui';
 class AppColors {
   static const Color oneMinuteToMidnight = Color(0xFF003087);
 
+  static const Color cucumber = Color(0xFF006400);
+
   static const Color atmosphere = Color(0xFF009CDE);
 
   static const Color lightIris = Color(0x005151C6);
@@ -140,6 +142,8 @@ class AppColors {
   static const Color circus = Color(0xFFF96332);
 
   static const Color sangoRed = Color(0xFFFA6650);
+
+  static const Color windsorBrown = Color(0xFFA35A00);
 
   static const Color pelati = Color(0xFFFF3636);
 

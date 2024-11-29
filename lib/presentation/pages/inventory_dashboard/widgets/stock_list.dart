@@ -1,11 +1,14 @@
 import 'package:eaudelux/presentation/pages/product_detail/product_detail.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
+import 'package:eaudelux/services/request.dart';
 import 'package:flutter/foundation.dart';
 
 class StockDataList extends StatefulWidget {
   final List<Perfume> perfumes;
 
-  const StockDataList({super.key, required this.perfumes});
+  final String role;
+
+  const StockDataList({super.key, required this.perfumes, required this.role});
 
   @override
   State<StockDataList> createState() => _StockDataListState();
@@ -34,46 +37,50 @@ class _StockDataListState extends State<StockDataList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: AppPaddings.defaultPadding,
-      itemCount: brands.length,
-      itemBuilder: (BuildContext context, int index) {
-        final brandName = brands[index];
-
-        // Filter perfumes by brand
-        final brandPerfumes = perfumes
-            .where((perfume) => perfume.brand.name == brandName)
-            .toList();
-
-        return ExpansionTile(
-          title: Text(
-            brandName,
-            style: AppTheme.brandStyle,
-          ),
-          children: brandPerfumes.isNotEmpty
-              ? brandPerfumes.map((perfume) {
-                  return ItemTile(perfume: perfume);
-                }).toList()
-              : [
-                  const ListTile(
-                    title: Text('No perfumes available'),
-                  ),
-                ],
-        );
-      },
+    return Center(
+      child: ListView.builder(
+        shrinkWrap: false,
+        padding: AppPaddings.defaultPadding,
+        itemCount: brands.length,
+        itemBuilder: (BuildContext context, int index) {
+          final brandName = brands[index];
+      
+          // Filter perfumes by brand
+          final brandPerfumes = perfumes
+              .where((perfume) => perfume.brand.name == brandName)
+              .toList();
+      
+          return ExpansionTile(
+            title: Text(
+              brandName,
+              style: AppTheme.brandStyle,
+            ),
+            children: brandPerfumes.isNotEmpty
+                ? brandPerfumes.map((perfume) {
+                    return ItemTile(perfume: perfume, role: widget.role, );
+                  }).toList()
+                : [
+                    const ListTile(
+                      title: Text('No perfumes available'),
+                    ),
+                  ],
+          );
+        },
+      ),
     );
   }
 }
 
 class ItemTile extends StatelessWidget {
   final Perfume perfume;
-  const ItemTile({super.key, required this.perfume});
+  final String role;
+
+  const ItemTile({super.key, required this.perfume, required this.role});
 
   @override
   Widget build(BuildContext context) {
     // Define the threshold for low stock
-    const lowStockThreshold = 15;
+    const lowStockThreshold = 40;
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
@@ -92,15 +99,39 @@ class ItemTile extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ProductDetailPage(perfume: perfume), // Replace with your target page
+                builder: (context) => ProductDetailPage(
+                    perfume: perfume, role: role,), // Replace with your target page
               ),
             );
           },
           child: ListTile(
             title: Text(perfume.name, style: AppTheme.itemNameStyle),
-            subtitle: Text('Stock: ${perfume.totalUnitInStock}',
-                style: AppTheme.itemStyle),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Stock: ${perfume.totalUnitInStock}',
+                    style: AppTheme.itemStyle),
+                Tooltip(
+                    message: 'Update',
+                    child: IconButton(
+                      icon: const Icon(Icons.edit, color: AppColors.monstrousGreen),
+                      onPressed: () {
+                        AppRequest.showUpdateDialog(context, perfume, (){});
+                      },
+                    ),
+                  ),
+                Tooltip(
+                    message: 'Disable',
+                    child: IconButton(
+                      icon: const Icon(Icons.disabled_by_default, color: AppColors.goshawkGrey),
+                      onPressed: () {
+                        AppRequest.showDisableDialog(context, perfume, (){});
+                      },
+                    ),
+                  ),
+              ],
+            ),
             trailing: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,7 +144,8 @@ class ItemTile extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(Icons.warning, color: AppColors.corona),
                       onPressed: () {
-                        _showRestockDialog(context, perfume);
+                        if (role == 'Operation Director'){AppRequest.showRestockDialog(context, perfume, true);}
+                        
                       },
                     ),
                   ),
@@ -125,75 +157,6 @@ class ItemTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showRestockDialog(BuildContext context, Perfume perfume) {
-    final TextEditingController quantityController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shadowColor: AppColors.tianLanSky,
-          backgroundColor: AppColors.lynxWhite,
-          title: const Text('Low Stock Alert'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Stock for "${perfume.name}" is low! Current stock: ${perfume.totalUnitInStock}',
-                style: AppTheme.blackInfoStyle,
-              ),
-              Text(
-                'Enter the quantity you want to restock if you want to send a restock request:',
-                style: AppTheme.blackInfoStyle,
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: quantityController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(hintText: 'Quantity'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text(
-                'Cancel',
-                style: AppTheme.brandStyle,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final quantity = int.tryParse(quantityController.text);
-                if (quantity != null && quantity >= 0) {
-                  // Here you would send the restock request (e.g., via a service or API)
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            'Restock request for ${quantity == 0 ? 0 : quantity} units sent!')),
-                  );
-                  Navigator.of(context).pop(); // Close the dialog
-                } else {
-                  // If the input is invalid, show a message
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Please enter a valid quantity')),
-                  );
-                }
-              },
-              child: Text(
-                'Send Request',
-                style: AppTheme.brandStyle,
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

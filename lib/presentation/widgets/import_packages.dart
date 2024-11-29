@@ -11,5 +11,5 @@ export 'appbar.dart';
 export '../../utils/styles/colours.dart';
 export '../../utils/styles/themes.dart';
 export '../../utils/styles/paddings.dart';
-export 'package:eaudelux/presentation/pages/inventory_dashboard/data.dart';
+export 'package:eaudelux/entities/data.dart';
 export 'package:eaudelux/services/export_inventory_report.dart';

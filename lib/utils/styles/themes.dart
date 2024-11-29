@@ -37,6 +37,9 @@ class AppTheme {
   static TextStyle get itemStyle =>
       TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w600);
 
+  static TextStyle get actionStyle =>
+      TextStyle(color: black, fontSize: 17, fontWeight: FontWeight.w600);
+
   static TextStyle get itemNameStyle =>
       TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w700);
 
@@ -147,6 +150,11 @@ class AppTheme {
           side: BorderSide(color: AppTheme.black, width: 1),
           borderRadius: BorderRadius.circular(10)));
 
+  static ButtonStyle get actionButtonStyle => TextButton.styleFrom(
+      backgroundColor: AppColors.karimunBlue,
+      foregroundColor: AppTheme.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)));
+
   static ButtonStyle get defaultStyle => TextButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         side: BorderSide(
@@ -209,19 +217,28 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppTheme.white,
-      contentPadding: const EdgeInsets.all(30),
       hintStyle: appHintStyle,
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
         borderSide:
-            BorderSide(color: AppTheme.borderTextFieldBorderColor, width: 10.0),
+            BorderSide(color: AppTheme.chosenTextFieldBorderColor, width: 2.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
       ),
     ),
 
     // Customize Elevated Button
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: primary,
+        backgroundColor: AppColors.white,
         elevation: 0,
         textStyle:
             TextStyle(color: black, fontSize: 14, fontWeight: FontWeight.bold),

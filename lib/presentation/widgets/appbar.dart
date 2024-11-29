@@ -1,10 +1,20 @@
+
 import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashboard.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
+import 'package:eaudelux/services/request.dart';
 
 class InventoryAppBar extends StatelessWidget {
   final Size appBarSize;
+  final List<String> brands;
+  final List<String> sizeTypes;
+  final String role;
 
-  const InventoryAppBar({super.key, required this.appBarSize});
+  const InventoryAppBar(
+      {super.key,
+      required this.appBarSize,
+      required this.brands,
+      required this.sizeTypes,
+      required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +25,9 @@ class InventoryAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ButtonSection(
-              height: appBarSize.height, width: appBarSize.width * 0.35),
-          Text('Inventory Dashboard', style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
+              height: appBarSize.height, width: appBarSize.width * 0.35, brands: brands, sizeTypes: sizeTypes, role: role),
+          Text('Inventory Dashboard',
+              style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
           SizedBox(
             width: appBarSize.width * 0.35,
             child: Row(
@@ -25,10 +36,10 @@ class InventoryAppBar extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   decoration: const BoxDecoration(
-                    color: AppColors.karimunBlue,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    )),
+                      color: AppColors.karimunBlue,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      )),
                   child: IconButton(
                     icon: SvgPicture.asset(
                       'assets/icons/svgs/logout.svg',
@@ -53,8 +64,70 @@ class ButtonSection extends StatelessWidget {
   final double height, width;
   final String logoImagePath = 'images/svgs/logo.svg';
   final String logoSemanticsLabel = 'EauDeLux Logo';
+  final List<String> brands;
+  final List<String> sizeTypes;
+  final String role;
 
-  const ButtonSection({super.key, required this.height, required this.width});
+  const ButtonSection(
+      {super.key,
+      required this.height,
+      required this.width,
+      required this.brands,
+      required this.sizeTypes, required this.role});
+
+  Widget buildButton(BuildContext context, String role) {
+    if (role == 'Operation Director') {
+      return Row(
+        children: [
+          TextButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const InventoryDashboard())),
+              child: Text(
+                'Inventory',
+                style: AppTheme.whiteMediumStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          TextButton(
+            onPressed: () => ExcelExporter.exportPerfumeDataToExcel(
+                DataSample.perfumes, context),
+            child: Text(
+              'Print Report',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      );
+    } else if (role == 'Operation Manager') {
+      return Row(
+        children: [
+          TextButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const InventoryDashboard())),
+              child: Text(
+                'Inventory',
+                style: AppTheme.whiteMediumStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          TextButton(
+            onPressed: () => AppRequest.showImportDialog(
+              context,
+              brands,
+              sizeTypes,
+            ),
+            child: Text(
+              'Import Product',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      );
+    }
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,29 +137,15 @@ class ButtonSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ElevatedButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InventoryDashboard())),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const InventoryDashboard())),
               style: AppTheme.navigationLogoButtonStyle,
               child: SvgPicture.asset(
                 logoImagePath,
                 semanticsLabel: logoSemanticsLabel,
               ),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InventoryDashboard())),
-              child: Text(
-                'Inventory',
-                style: AppTheme.whiteMediumStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            TextButton(
-              onPressed: () => ExcelExporter.exportPerfumeDataToExcel(DataSample.perfumes, context),
-              child: Text(
-                'Print Report',
-                style: AppTheme.whiteMediumStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            buildButton(context, role)
           ],
         ));
   }

@@ -1,9 +1,10 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;  // Web package from Dart
+import 'dart:html' as html;
 
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 
 class ExcelExporter {
   // Function to export perfume data to an Excel file
@@ -26,19 +27,26 @@ class ExcelExporter {
 
     // Add perfume data to the Excel sheet
     for (var perfume in perfumes) {
+      // Flatten or format lists into strings
+      String stock = perfume.stock.join(', ');
+      String receiveFromBrand = perfume.receiveFromBrand.join(', ');
+      String price = perfume.price.join(', ');
+      String unitCost = perfume.unitCost.join(', ');
+      
+      // Add data as a row
       sheet.appendRow([
         perfume.name,
-        perfume.sold,
-        perfume.stock,
-        perfume.receive,
-        perfume.price,
-        perfume.unitCost,
-        perfume.brand.name
+        '', // Replace with actual sold data if available
+        stock,
+        receiveFromBrand,
+        price,
+        unitCost,
+        perfume.brand.name,
       ]);
     }
 
     // Convert the Excel object to bytes
-    Uint8List? excelBytes = excel.encode() as Uint8List?;
+    final List<int>? excelBytes = excel.encode();
 
     if (excelBytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -47,21 +55,34 @@ class ExcelExporter {
       return;
     }
 
+    // Handle Web download
     if (kIsWeb) {
-      // For Web: Create a Blob and generate a download URL
-      final blob = html.Blob([excelBytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      // ignore: unused_local_variable
-      final anchor = html.AnchorElement(href: url)
-        ..setAttribute('download', 'perfume_data.xlsx')
-        ..click(); // Automatically trigger the download
-      html.Url.revokeObjectUrl(url);  // Cleanup the URL after download
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Excel file downloaded!')),
-      );
+      try {
+        // Create a Blob and generate a download URL
+        final blob = html.Blob([excelBytes]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
+
+        // Generate and click the download link
+        final anchor = html.AnchorElement(href: url)
+          ..setAttribute('download', 'perfume_data.xlsx')
+          ..click();
+
+        // Cleanup the URL after download
+        html.Url.revokeObjectUrl(url);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Excel file downloaded!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error downloading file: $e')),
+        );
+      }
     } else {
+      // For platforms other than web
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('File export is only supported on the web for now.')),
+        const SnackBar(
+            content: Text('File export is only supported on the web for now.')),
       );
     }
   }
