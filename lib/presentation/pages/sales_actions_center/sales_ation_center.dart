@@ -48,7 +48,7 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
     return Scaffold(
       appBar: PreferredSize(
       preferredSize: Size(appBarSize.width, appBarSize.height),
-      child: SalesAppBar(appBarSize: appBarSize, role: 'Sales Manager'),
+      child: SalesAppBar(appBarSize: appBarSize, role: 'Sales Staff'),
     ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,4 +1,4 @@
-import 'package:eaudelux/presentation/pages/delivery_detail/delivery_detail.dart';
+import 'package:eaudelux/presentation/pages/inventory_delivery_to_branch/delivery_detail.dart';
 import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/defect_list.dart';
 import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/delivery_box.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
@@ -6,7 +6,9 @@ import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_
 import 'package:flutter/foundation.dart';
 
 class InventoryDashboard extends StatefulWidget {
-  const InventoryDashboard({super.key});
+  final String role;
+
+  const InventoryDashboard({super.key, required this.role});
 
   @override
   State<InventoryDashboard> createState() => _InventoryDashboardState();
@@ -38,7 +40,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     perfumes = DataSample.getPerfumes();
     brands = DataSample.getBrands();
     sizes = DataSample.getSizeTypes();
-    role = DataSample.getRole(2);
+    role = widget.role;
     request = DataSample.getRestockRequests();
   }
 
@@ -97,84 +99,85 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
               brands: brands,
               sizeTypes: sizes,
               role: role)),
-      body: (role == 'Operation Staff') ? const UpdateOrderStatusPage() :
-      Container(
-        height: bodySize.height,
-        padding: AppPaddings.defaultPadding,
-        color: AppColors.tropicalBreeze,
-        child: Row(
-          children: [
-            // Left section (Board of Stock Availability - 6 parts)
-            Expanded(
-              flex: 11,
-              child: Container(
-                padding: AppPaddings.defaultPadding,
-                decoration: AppTheme.inventoryTabBoxDecoration,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Example for a stock availability board
-                    Text(
-                      'Stock Availability',
-                      style: AppTheme.blackInfoStyle,
-                    ),
+      body: (role == 'Operation Staff')
+          ? const UpdateOrderStatusPage()
+          : Container(
+              height: bodySize.height,
+              padding: AppPaddings.defaultPadding,
+              color: AppColors.tropicalBreeze,
+              child: Row(
+                children: [
+                  // Left section (Board of Stock Availability - 6 parts)
+                  Expanded(
+                    flex: 11,
+                    child: Container(
+                      padding: AppPaddings.defaultPadding,
+                      decoration: AppTheme.inventoryTabBoxDecoration,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Example for a stock availability board
+                          Text(
+                            'Stock Availability',
+                            style: AppTheme.blackInfoStyle,
+                          ),
 
-                    SizedBox(height: deviceHeight * 0.01),
+                          SizedBox(height: deviceHeight * 0.01),
 
-                    Container(
-                      height: bodySize.height * 0.8,
-                      decoration: AppTheme.squarebBoxDecoration,
-                      child: StockDataList(
-                        perfumes: perfumes,
-                        role: role,
+                          Container(
+                            height: bodySize.height * 0.8,
+                            decoration: AppTheme.squarebBoxDecoration,
+                            child: StockDataList(
+                              perfumes: perfumes,
+                              role: role,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
 
-            SizedBox(width: deviceWidth * 0.01),
+                  SizedBox(width: deviceWidth * 0.01),
 
-            // Right section (Chart for Top Selling Items - 4 parts)
+                  // Right section (Chart for Top Selling Items - 4 parts)
 
-            Expanded(
-              flex: 7,
-              child: Column(
-                children: [
                   Expanded(
-                      flex: (role == 'Operation Manager') ? 1 : 3,
-                      child: DashboardBox(
-                        inventoryTurnOverRatio: inventoryTurnOverRatio,
-                        grossMarginROI: grossMarginROI,
-                        deviceWidth: deviceWidth,
-                        role: role,
-                        brands: brands,
-                        sizeTypes: sizes,
-                        requestChoice: requestChoice,
-                        onRequestChoiceChanged: (newRequestChoice) {
-                          setState(() {
-                            requestChoice = newRequestChoice;
-                          });
-                        },
-                      )),
-                  SizedBox(height: deviceHeight * 0.01),
-                  Expanded(
-                    flex: 9,
-                    child: DashboardTask(
-                      request: request,
-                      role: role,
-                      perfumes: perfumes,
-                      requestChoice: requestChoice,
+                    flex: 7,
+                    child: Column(
+                      children: [
+                        Expanded(
+                            flex: (role == 'Operation Manager') ? 1 : 3,
+                            child: DashboardBox(
+                              inventoryTurnOverRatio: inventoryTurnOverRatio,
+                              grossMarginROI: grossMarginROI,
+                              deviceWidth: deviceWidth,
+                              role: role,
+                              brands: brands,
+                              sizeTypes: sizes,
+                              requestChoice: requestChoice,
+                              onRequestChoiceChanged: (newRequestChoice) {
+                                setState(() {
+                                  requestChoice = newRequestChoice;
+                                });
+                              },
+                            )),
+                        SizedBox(height: deviceHeight * 0.01),
+                        Expanded(
+                          flex: 9,
+                          child: DashboardTask(
+                            request: request,
+                            role: role,
+                            perfumes: perfumes,
+                            requestChoice: requestChoice,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
