@@ -2,6 +2,7 @@ import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashbo
 import 'package:eaudelux/presentation/pages/sales_actions_center/sales_ation_center.dart';
 import 'package:eaudelux/presentation/pages/sales_dashboard/sales_dashboard.dart';
 import 'package:eaudelux/presentation/pages/sales_management_page/sales_management.dart';
+import 'package:eaudelux/presentation/pages/trends_prediction/trend_prediction.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class RoleSelectionPage extends StatelessWidget {
@@ -15,6 +16,16 @@ class RoleSelectionPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          ListTile(
+            title: const Text('CEO'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TrendPredictPage()),
+              );
+            },
+          ),
           ListTile(
             title: const Text('Inventory Director'),
             onTap: () {
@@ -72,7 +83,7 @@ class RoleSelectionPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SalesStaffPage()),
+                MaterialPageRoute(builder: (context) => const SalesStaffPage()),
               );
             },
           ),

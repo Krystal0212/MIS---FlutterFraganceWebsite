@@ -77,6 +77,8 @@ class SalesAppBar extends StatelessWidget {
 
   String _getRoleTitle(String role) {
     switch (role) {
+      case 'CEO':
+        return 'Prediction Center';
       case 'Sales Staff':
         return 'Sales Action Center';
       case 'Sales Manager':

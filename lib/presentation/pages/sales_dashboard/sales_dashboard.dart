@@ -16,7 +16,6 @@ class _SalesDirectorPageState extends State<SalesDirectorPage> {
   final String logoSemanticsLabel = 'EauDeLux Logo';
 
   late Size appBarSize, deviceSize, bodySize;
-  late String role;
   late List<PieChartDataModel> data; 
 
   @override
@@ -38,7 +37,7 @@ class _SalesDirectorPageState extends State<SalesDirectorPage> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size(appBarSize.width, appBarSize.height),
-          child: SalesAppBar(appBarSize: appBarSize, role: role)),
+          child: SalesAppBar(appBarSize: appBarSize, role: 'Sales Director')),
       body: Row(
         children: [
           const Expanded(
