@@ -22,7 +22,6 @@ class _SalesDirectorPageState extends State<SalesDirectorPage> {
   @override
   void initState() {
     super.initState();
-    role = DataSample.getSalesRole(1);
   }
 
   @override

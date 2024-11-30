@@ -6,7 +6,9 @@ import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_
 import 'package:flutter/foundation.dart';
 
 class InventoryDashboard extends StatefulWidget {
-  const InventoryDashboard({super.key});
+  final String role;
+
+  const InventoryDashboard({super.key, required this.role});
 
   @override
   State<InventoryDashboard> createState() => _InventoryDashboardState();
@@ -38,7 +40,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     perfumes = DataSample.getPerfumes();
     brands = DataSample.getBrands();
     sizes = DataSample.getSizeTypes();
-    role = DataSample.getInventoryRole(2);
+    role = widget.role;
     request = DataSample.getRestockRequests();
   }
 

@@ -1,4 +1,3 @@
-
 import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashboard.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
@@ -24,8 +23,15 @@ class InventoryAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ButtonSection(
-              height: appBarSize.height, width: appBarSize.width * 0.35, brands: brands, sizeTypes: sizeTypes, role: role),
-          Text(role == 'Operation Staff' ? 'Update Order Status':'Inventory Dashboard',
+              height: appBarSize.height,
+              width: appBarSize.width * 0.35,
+              brands: brands,
+              sizeTypes: sizeTypes,
+              role: role),
+          Text(
+              role == 'Operation Staff'
+                  ? 'Update Order Status'
+                  : 'Inventory Dashboard',
               style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
           SizedBox(
             width: appBarSize.width * 0.35,
@@ -63,10 +69,24 @@ class SalesAppBar extends StatelessWidget {
   final Size appBarSize;
   final String role;
 
-  const SalesAppBar(
-      {super.key,
-      required this.role,
-      required this.appBarSize,});
+  const SalesAppBar({
+    super.key,
+    required this.role,
+    required this.appBarSize,
+  });
+
+  String _getRoleTitle(String role) {
+    switch (role) {
+      case 'Sales Staff':
+        return 'Sales Action Center';
+      case 'Sales Manager':
+        return 'Sales Management';
+      case 'Sales Director':
+        return 'Sales Dashboard';
+      default:
+        return 'Sales Action Center'; // Default title for any other role
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +97,13 @@ class SalesAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ButtonSection(
-              height: appBarSize.height, width: appBarSize.width * 0.35, role: role),
-          Text(role == 'Sales Staff' ? 'Sales Action Center':'Sales Dashboard',
-              style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
+              height: appBarSize.height,
+              width: appBarSize.width * 0.35,
+              role: role),
+          Text(
+            _getRoleTitle(role),
+            style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25),
+          ),
           SizedBox(
             width: appBarSize.width * 0.35,
             child: Row(
@@ -125,21 +149,24 @@ class ButtonSection extends StatelessWidget {
       required this.height,
       required this.width,
       this.brands,
-      this.sizeTypes, required this.role});
+      this.sizeTypes,
+      required this.role});
 
   Widget buildButton(BuildContext context, String role) {
     if (role == 'Operation Director') {
       return Row(
         children: [
           TextButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const InventoryDashboard())),
-              child: Text(
-                'Inventory',
-                style: AppTheme.whiteMediumStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InventoryDashboard(
+                      role: role,
+                    ))),
+            child: Text(
+              'Inventory',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
             ),
+          ),
           TextButton(
             onPressed: () => ExcelExporter.exportPerfumeDataToExcel(
                 DataSample.perfumes, context),
@@ -155,14 +182,16 @@ class ButtonSection extends StatelessWidget {
       return Row(
         children: [
           TextButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const InventoryDashboard())),
-              child: Text(
-                'Inventory',
-                style: AppTheme.whiteMediumStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InventoryDashboard(
+                      role: role,
+                    ))),
+            child: Text(
+              'Inventory',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
             ),
+          ),
           TextButton(
             onPressed: () => {},
             child: Text(
@@ -186,7 +215,9 @@ class ButtonSection extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const InventoryDashboard())),
+                  builder: (context) => InventoryDashboard(
+                        role: role,
+                      ))),
               style: AppTheme.navigationLogoButtonStyle,
               child: SvgPicture.asset(
                 logoImagePath,
