@@ -18,7 +18,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
 
-  late String imgLink;
+  late String imgLink, prodName;
 
   late List<Map<String, String>> prodCategories;
   late List<String> prodBadges;
@@ -40,7 +40,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     appBarSize = Size(maxWidth, appBarHeight);
 
     imgLink = widget.perfumeData.imageUrl;
-
+    prodName = widget.perfumeData.name;
     prodCategories = [
       {
         'category' : '1.6 Oz',
@@ -59,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         'price' : '\$${widget.perfumeData.price + 300}'
       },
     ];
-    prodBadges = widget.perfumeData.badgeText;
+    prodBadges = widget.perfumeData.badgeText.sublist(0,3);
     prodDescriptions = {
       'brandInfo' : widget.perfumeData.brand,
       'prodDesc' : widget.perfumeData.description
@@ -86,6 +86,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               alignment: Alignment.center,
             ),
             ProductGeneralPlaceholder(
+              prodName: prodName,
               imgUrl: imgLink,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -104,7 +105,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 }
 
 class ProductGeneralPlaceholder extends StatelessWidget {
-  final String imgUrl, prodDesc;
+  final String imgUrl, prodDesc, prodName;
   final double maxWidth, maxHeight;
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
@@ -116,7 +117,8 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     required this.maxHeight,
     required this.prodCategories,
     required this.prodBadges,
-    required this.prodDesc
+    required this.prodDesc,
+    required this.prodName
   });
 
   @override
@@ -129,9 +131,11 @@ class ProductGeneralPlaceholder extends StatelessWidget {
           scrollDirection: Axis.horizontal, // Scrollable if content overflows
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProductImage(imgUrl: imgUrl),
               ProductDetailPlaceholder(
+                prodName: prodName,
                 prodCategories: prodCategories,
                 prodBadges: prodBadges,
                 prodDesc: prodDesc,
@@ -146,14 +150,15 @@ class ProductGeneralPlaceholder extends StatelessWidget {
 
 class ProductDetailPlaceholder extends StatelessWidget {
   final List<Map<String,String>> prodCategories;
-  final String prodDesc;
+  final String prodDesc, prodName;
   final List<String> prodBadges;
 
   const ProductDetailPlaceholder({
     super.key,
     required this.prodCategories,
     required this.prodBadges,
-    required this.prodDesc
+    required this.prodDesc,
+    required this.prodName
   });
 
   @override
@@ -161,6 +166,7 @@ class ProductDetailPlaceholder extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(maxWidth: 600), // Limit width
       child: ProductData(
+        prodName: prodName,
         prodCategories: prodCategories,
         prodBadges: prodBadges,
         prodDesc: prodDesc,
@@ -239,14 +245,15 @@ class ProductImage extends StatelessWidget {
 
 class ProductData extends StatefulWidget {
   final List<String> prodBadges;
-  final String prodDesc;
+  final String prodDesc, prodName;
   final List<Map<String,String>> prodCategories;
 
   const ProductData({
     super.key,
     required this.prodBadges,
     required this.prodCategories,
-    required this.prodDesc
+    required this.prodDesc,
+    required this.prodName
   });
 
   @override
@@ -272,44 +279,44 @@ class _ProductDataState extends State<ProductData> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Row(
-                children: widget.prodBadges.map((badge){
-                  return  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      badge,
-                      style: TextStyle(
-                        color: AppTheme.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-
             Text(
-              "Product's name",
+              widget.prodName,
               style: TextStyle(
-                fontSize: 45,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.black
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.black
               ),
             ),
 
+            Row(
+              children: widget.prodBadges.map((badge){
+                return  Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    badge,
+                    style: TextStyle(
+                      color: AppTheme.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 15,),
             Container(
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
                 widget.prodDesc,
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 18,
                     color: AppTheme.black
                 ),
               ),

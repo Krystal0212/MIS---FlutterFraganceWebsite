@@ -127,17 +127,22 @@ class ActionsSection extends StatelessWidget {
       ),
     );
 
-    return Container(
-      color: AppTheme.white,
-      width: width * 0.9,
-      height: height,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            logoPictureBox,
-            SizedBox(width: width * 0.3, child: searchTextField),
-            navigatorBox
-          ]),
+    return InkWell(
+      onTap: (){
+        AppRoutes.push(context, const HomePage());
+      },
+      child: Container(
+        color: AppTheme.white,
+        width: width * 0.9,
+        height: height,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              logoPictureBox,
+              SizedBox(width: width * 0.3, child: searchTextField),
+              navigatorBox
+            ]),
+      ),
     );
   }
 }
