@@ -6,10 +6,7 @@ import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  final String imageUrl;
-  final String productId;
-  final String title;
-  final String price;
+  final String imageUrl, productId, title, price, brand;
   final String? badgeText;
   final bool showHoverButton; // Toggle hover button
   final VoidCallback? onButtonClick; // Action on hover button click
@@ -20,6 +17,7 @@ class ProductCard extends StatelessWidget {
     required this.productId,
     required this.title,
     required this.price,
+    required this.brand,
     this.badgeText,
     this.showHoverButton = false,
     this.onButtonClick,
@@ -29,12 +27,11 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: Card(
+        color: AppTheme.white,
+        elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: InkWell(
-          onTap: (){
-            onButtonClick;
-            print('check for card info');
-          },
+          onTap: onButtonClick,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,10 +46,11 @@ class ProductCard extends StatelessWidget {
               CardInfo(
                 title: title,
                 price: price,
+                brand: brand,
               ),
 
               // Cart & buy buttons
-              const CardActivity(productId: 'pid123')
+              const Expanded(child: CardActivity(productId: 'pid123'))
             ],
           ),
         ),
@@ -83,7 +81,7 @@ class CardImage extends StatelessWidget{
             const BorderRadius.vertical(top: Radius.circular(12)),
             child: CachedNetworkImage(
               width: 300,
-              height: 250,
+              height: 230,
               maxHeightDiskCache: 300,
               maxWidthDiskCache: 200,
               imageUrl: imageUrl,
@@ -128,12 +126,13 @@ class CardImage extends StatelessWidget{
 }
 
 class CardInfo extends StatelessWidget{
-  final String title, price;
+  final String title, price, brand;
 
   const CardInfo({
     super.key,
     required this.title,
-    required this.price
+    required this.price,
+    required this.brand
   });
 
   @override
@@ -144,18 +143,25 @@ class CardInfo extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            brand,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            price,
+            title,
             style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            price,
+            style: TextStyle(
+              fontSize: 20,
+              color: AppTheme.labelTextColor,
             ),
           ),
         ],
@@ -183,6 +189,16 @@ class CardActivity extends StatelessWidget{
           children: [
             IconButton(
                 onPressed: (){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Center(
+                        child: Text('Added to cart!',
+                        style: AppTheme.whiteMediumStyle
+                        ),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                   print('Add $productId into cart');
                 },
                 color: AppTheme.black,
@@ -190,6 +206,16 @@ class CardActivity extends StatelessWidget{
             ),
             IconButton(
                 onPressed: (){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Center(
+                        child: Text('Added to cart!',
+                            style: AppTheme.whiteMediumStyle
+                        ),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                   print('Buy $productId');
                 },
                 color: AppTheme.black,

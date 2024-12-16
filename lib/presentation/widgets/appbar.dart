@@ -1,8 +1,11 @@
+import 'package:eaudelux/presentation/pages/pages.dart';
 import 'package:eaudelux/presentation/widgets/text_navigator_button.dart';
 import 'package:eaudelux/utils/styles/colours.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utils/activity/routing.dart';
 
 class CustomAppBar extends StatelessWidget {
   final Size appBarSize;
@@ -99,7 +102,9 @@ class ActionsSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              AppRoutes.push(context, const UserInfoPage());
+            },
             icon: const Icon(Icons.account_circle),
             label: Text('My Account', style: AppTheme.blackMediumStyle),
             style: AppTheme.navigationUserSectionButtonStyle,
@@ -111,9 +116,11 @@ class ActionsSection extends StatelessWidget {
             style: AppTheme.navigationUserSectionButtonStyle,
           ),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              AppRoutes.push(context, const OrderPage());
+            },
             icon: const Icon(Icons.shopping_bag),
-            label: Text('0 Items', style: AppTheme.blackMediumStyle),
+            label: Text('3 Items', style: AppTheme.blackMediumStyle),
             style: AppTheme.navigationUserSectionButtonStyle,
           ),
         ],
@@ -151,19 +158,25 @@ class NavigatorsSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextNavigatorButton(
-            onPressedFunction: () {},
+            onPressedFunction: () {
+              AppRoutes.push(context, const ProductPage());
+            },
             title: 'PERFUMES',
             buttonStyle: AppTheme.navigationProductSectionButtonStyle,
           ),
           const SizedBox(width: 50),
           TextNavigatorButton(
-            onPressedFunction: () {},
+            onPressedFunction: () {
+              AppRoutes.push(context, const ProductPage());
+            },
             title: 'BRANDS',
             buttonStyle: AppTheme.navigationProductSectionButtonStyle,
           ),
           const SizedBox(width: 50),
           TextNavigatorButton(
-            onPressedFunction: () {},
+            onPressedFunction: () {
+              AppRoutes.push(context, const ProductPage());
+            },
             title: 'GIFTS',
             buttonStyle: AppTheme.navigationProductSectionButtonStyle,
           ),

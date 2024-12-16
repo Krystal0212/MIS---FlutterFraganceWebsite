@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+import '../../utils/activity/load_product.dart';
+import '../model/product_model.dart';
+import '../widgets/pseudo_product_data.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -20,18 +23,20 @@ class HomePageState extends State<HomePage>
   int _currentPageIndex = 0;
 
   late List<String> banners = [
-    'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=600&v=1692754461&width=600',
-    'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=600&v=1692754461&width=600',
-    'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=600&v=1692754461&width=600',
+    'https://theme.hstatic.net/1000340570/1000964732/14/slideshow_3.jpg?v=6745',
+    'https://theme.hstatic.net/1000340570/1000964732/14/slideshow_2.jpg?v=6745',
+    'https://theme.hstatic.net/1000340570/1000964732/14/slideshow_1.jpg?v=6745',
   ];
 
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
 
+  late Future<List<Perfume>> _perfumeFuture;
+
   @override
   initState() {
     super.initState();
-
+    _perfumeFuture = loadPerfumesFromCsv('../../../assets/data/final_perfume_data.csv');
     _pageViewController = PageController();
     _tabController = TabController(length: banners.length, vsync: this);
 
@@ -49,7 +54,7 @@ class HomePageState extends State<HomePage>
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
 
     maxWidth = MediaQuery.of(context).size.width;
@@ -73,37 +78,55 @@ class HomePageState extends State<HomePage>
         preferredSize: appBarSize,
         child: CustomAppBar(appBarSize: appBarSize,),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              child: pagingAdvertisement(maxWidth*0.62),
-            ),
-          ),
+      body: FutureBuilder<List<Perfume>>(
+        future: _perfumeFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error loading data: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No perfumes found.'));
+          }
+          final perfumes = snapshot.data!;
 
-          const CustomSliverTitle(title: 'Most purchased'),
-          ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
-          CustomSliverTextButton(
-              onPressed: (){},
-              text: 'View more',
-              maxWidth: 400
-          ),
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: pagingAdvertisement(maxWidth*0.62),
+                ),
+              ),
 
-          const CustomSliverTitle(title: 'Latest'),
-          ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
-          CustomSliverTextButton(
-              onPressed: (){},
-              text: 'View more',
-              maxWidth: 400
-          ),
+              const CustomSliverTitle(title: 'Most purchased'),
+              ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth,
+                perfumes: perfumes,),
+              CustomSliverTextButton(
+                  onPressed: (){},
+                  text: 'View more',
+                  maxWidth: 400
+              ),
 
-        ],
+              const CustomSliverTitle(title: 'Latest'),
+              ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth,
+                perfumes: perfumes,),
+              CustomSliverTextButton(
+                  onPressed: (){},
+                  text: 'View more',
+                  maxWidth: 400
+              ),
+
+            ],
+          );
+        }
       ),
     );
   }
 
+  /*
 
+   */
 
   /// Lazy import...
   Widget pagingAdvertisement(double maxWidth){
@@ -128,6 +151,9 @@ class HomePageState extends State<HomePage>
                         width: maxWidth*0.95,
                         height: maxHeight,
                         loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress != null) {
+                            return const CircularProgressIndicator();
+                          }
                           if (loadingProgress == null) {
                             return child; // Image loaded successfully
                           }

@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../utils/styles/colours.dart';
 import '../../utils/styles/themes.dart';
+import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  const ProductDetailPage({super.key});
+  final Perfume perfumeData;
+  const ProductDetailPage({super.key, required this.perfumeData});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -37,30 +39,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     appBarHeight = maxHeight * 0.2;
     appBarSize = Size(maxWidth, appBarHeight);
 
-    imgLink = 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=600&v=1692754461&width=600';
+    imgLink = widget.perfumeData.imageUrl;
 
     prodCategories = [
       {
         'category' : '1.6 Oz',
-        'price' : '\$100'
+        'price' : '\$${widget.perfumeData.price}'
       },
       {
         'category' : '3.2 Oz',
-        'price' : '\$189'
+        'price' : '\$${widget.perfumeData.price + 100}'
       },
       {
         'category' : '4.8 Oz',
-        'price' : '\$269'
+        'price' : '\$${widget.perfumeData.price + 200}'
       },
       {
         'category' : '6.4 Oz',
-        'price' : '\$349'
+        'price' : '\$${widget.perfumeData.price + 300}'
       },
     ];
-    prodBadges = ['Unisex', 'Extrait de Parfum'];
+    prodBadges = widget.perfumeData.badgeText;
     prodDescriptions = {
-      'brandInfo' : 'This is brand Information',
-      'prodDesc' : 'This is product description'
+      'brandInfo' : widget.perfumeData.brand,
+      'prodDesc' : widget.perfumeData.description
     };
   }
 
@@ -89,6 +91,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               maxHeight: maxHeight,
               prodCategories: prodCategories,
               prodBadges: prodBadges,
+              prodDesc: prodDescriptions['prodDesc']!,
             ),
             ProductDescriptionPlaceholder(
               prodDescriptions: prodDescriptions,
@@ -101,7 +104,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 }
 
 class ProductGeneralPlaceholder extends StatelessWidget {
-  final String imgUrl;
+  final String imgUrl, prodDesc;
   final double maxWidth, maxHeight;
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
@@ -113,6 +116,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     required this.maxHeight,
     required this.prodCategories,
     required this.prodBadges,
+    required this.prodDesc
   });
 
   @override
@@ -130,6 +134,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
               ProductDetailPlaceholder(
                 prodCategories: prodCategories,
                 prodBadges: prodBadges,
+                prodDesc: prodDesc,
               ),
             ],
           ),
@@ -141,12 +146,14 @@ class ProductGeneralPlaceholder extends StatelessWidget {
 
 class ProductDetailPlaceholder extends StatelessWidget {
   final List<Map<String,String>> prodCategories;
+  final String prodDesc;
   final List<String> prodBadges;
 
   const ProductDetailPlaceholder({
     super.key,
     required this.prodCategories,
-    required this.prodBadges
+    required this.prodBadges,
+    required this.prodDesc
   });
 
   @override
@@ -156,6 +163,7 @@ class ProductDetailPlaceholder extends StatelessWidget {
       child: ProductData(
         prodCategories: prodCategories,
         prodBadges: prodBadges,
+        prodDesc: prodDesc,
       ),
     );
   }
@@ -231,12 +239,14 @@ class ProductImage extends StatelessWidget {
 
 class ProductData extends StatefulWidget {
   final List<String> prodBadges;
+  final String prodDesc;
   final List<Map<String,String>> prodCategories;
 
   const ProductData({
     super.key,
     required this.prodBadges,
-    required this.prodCategories
+    required this.prodCategories,
+    required this.prodDesc
   });
 
   @override
@@ -297,7 +307,7 @@ class _ProductDataState extends State<ProductData> {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
+                widget.prodDesc,
                 style: TextStyle(
                     fontSize: 25,
                     color: AppTheme.black
@@ -433,14 +443,14 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.black
+                        color: AppTheme.white
                       ),
                     ),
                     Text(
                         widget.prodDescription[currSelectedOption]!,
                       style: TextStyle(
                           fontSize: 25,
-                        color: AppTheme.black
+                        color: AppTheme.white
                       ),
                     )
                   ],

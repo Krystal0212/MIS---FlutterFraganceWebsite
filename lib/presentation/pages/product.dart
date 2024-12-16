@@ -1,5 +1,9 @@
+import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/activity/load_product.dart';
+import '../model/product_model.dart';
+import '../widgets/pseudo_product_data.dart';
 import '../widgets/widgets.dart';
 
 class ProductPage extends StatefulWidget {
@@ -12,10 +16,12 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
+  late Future<List<Perfume>> perfumes;
 
   @override
   void initState() {
     super.initState();
+    perfumes = loadPerfumesFromCsv('../../../assets/data/final_perfume_data.csv');
   }
 
   @override
@@ -27,6 +33,7 @@ class ProductPageState extends State<ProductPage> {
 
     appBarHeight = maxHeight * 0.2;
     appBarSize = Size(maxWidth, appBarHeight);
+
   }
 
   @override
@@ -41,24 +48,43 @@ class ProductPageState extends State<ProductPage> {
           preferredSize: appBarSize,
           child: CustomAppBar(appBarSize: appBarSize)
       ),
-      body: CustomScrollView(
-        slivers: [
-          const CustomSliverTitle(title: 'Available Fragrances'),
-          ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
-          CustomSliverTextButton(
-              onPressed: (){},
-              text: 'View more',
-              maxWidth: 400
-          ),
+      body: FutureBuilder(
+          future: perfumes,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error loading data: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No perfumes found.'));
+            }
+            final perfumes = snapshot.data!;
 
-          ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth),
-          CustomSliverTextButton(
-              onPressed: (){},
-              text: 'View more',
-              maxWidth: 400
-          ),
+            return CustomScrollView(
+              slivers: [
+                const CustomSliverTitle(title: 'Available Fragrances'),
+                ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth, perfumes: perfumes,
+                ),
+                CustomSliverTextButton(
+                    onPressed: (){
+                      AppRoutes.push(context, const ProductPage());
+                    },
+                    text: 'View more',
+                    maxWidth: 400
+                ),
 
-        ],
+                ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth, perfumes: perfumes,),
+                CustomSliverTextButton(
+                    onPressed: (){
+                      AppRoutes.push(context, const ProductPage());
+                    },
+                    text: 'View more',
+                    maxWidth: 400
+                ),
+
+              ],
+            );
+          }
       )
     );
   }

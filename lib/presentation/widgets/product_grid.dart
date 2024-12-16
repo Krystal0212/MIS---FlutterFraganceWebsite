@@ -1,14 +1,20 @@
+import 'package:eaudelux/presentation/pages/product_detail.dart';
+import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:flutter/material.dart';
 
+import '../model/product_model.dart';
 import 'product_card.dart';
+import 'pseudo_product_data.dart';
 
 class ProductGrid extends StatelessWidget {
   final double maxHeight, maxWidth;
+  final List<Perfume> perfumes;
 
   const ProductGrid({
     super.key,
     required this.maxHeight,
-    required this.maxWidth
+    required this.maxWidth,
+    required this.perfumes
   });
 
   @override
@@ -18,20 +24,27 @@ class ProductGrid extends StatelessWidget {
       sliver: SliverGrid(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 310, /// width
-            mainAxisExtent: 400, /// height
+            mainAxisExtent: 450, /// height
             mainAxisSpacing: 15,
           ),
 
           delegate: SliverChildBuilderDelegate((context, index) {
+            final item = perfumes[index];
             return ProductCard(
-              imageUrl: 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=300&v=1692754461&width=300',
-              productId: 'pid123',
-              title: 'Fragrance',
-              price: '\$999',
-              badgeText: index%2==0?'men':'women',
+              imageUrl: item.imageUrl.isNotEmpty
+                  ? item.imageUrl
+                  : 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=300&v=1692754461&width=300',
+              productId: item.id,
+              title: item.name,
+              price: "\$${item.price}",
+              badgeText: 'Hot',
+              brand: item.brand,
+              onButtonClick: () {
+                AppRoutes.push(context, ProductDetailPage(perfumeData: item));
+              },
             );
           },
-          childCount: 10),
+          childCount: perfumes.length),
       ),
     );
   }
