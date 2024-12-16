@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eaudelux/presentation/pages/order.dart';
 
+import '../../utils/SharedPreferences/order_storage.dart';
+import '../../utils/activity/routing.dart';
 import '../../utils/styles/colours.dart';
 import '../../utils/styles/themes.dart';
 import '../model/product_model.dart';
@@ -43,23 +46,25 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     prodName = widget.perfumeData.name;
     prodCategories = [
       {
-        'category' : '1.6 Oz',
+        'category' : widget.perfumeData.size[0],
         'price' : '\$${widget.perfumeData.price}'
       },
       {
-        'category' : '3.2 Oz',
+        'category' : widget.perfumeData.size[1],
         'price' : '\$${widget.perfumeData.price + 100}'
       },
       {
-        'category' : '4.8 Oz',
+        'category' : widget.perfumeData.size[2],
         'price' : '\$${widget.perfumeData.price + 200}'
       },
       {
-        'category' : '6.4 Oz',
+        'category' : widget.perfumeData.size[3],
         'price' : '\$${widget.perfumeData.price + 300}'
       },
     ];
-    prodBadges = widget.perfumeData.badgeText.sublist(0,3);
+    prodBadges = widget.perfumeData.badgeText.sublist(0,
+        widget.perfumeData.badgeText.length> 3 ?
+        3 : widget.perfumeData.badgeText.length);
     prodDescriptions = {
       'brandInfo' : widget.perfumeData.brand,
       'prodDesc' : widget.perfumeData.description
@@ -87,6 +92,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             ProductGeneralPlaceholder(
               prodName: prodName,
+              perfumeData: widget.perfumeData,
               imgUrl: imgLink,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -109,6 +115,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
   final double maxWidth, maxHeight;
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
+  final Perfume perfumeData;
 
   const ProductGeneralPlaceholder({
     super.key,
@@ -118,7 +125,8 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     required this.prodCategories,
     required this.prodBadges,
     required this.prodDesc,
-    required this.prodName
+    required this.prodName,
+    required this.perfumeData
   });
 
   @override
@@ -139,6 +147,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
                 prodCategories: prodCategories,
                 prodBadges: prodBadges,
                 prodDesc: prodDesc,
+                perfumeData: perfumeData,
               ),
             ],
           ),
@@ -152,13 +161,15 @@ class ProductDetailPlaceholder extends StatelessWidget {
   final List<Map<String,String>> prodCategories;
   final String prodDesc, prodName;
   final List<String> prodBadges;
+  final Perfume perfumeData;
 
   const ProductDetailPlaceholder({
     super.key,
     required this.prodCategories,
     required this.prodBadges,
     required this.prodDesc,
-    required this.prodName
+    required this.prodName,
+    required this.perfumeData
   });
 
   @override
@@ -170,6 +181,7 @@ class ProductDetailPlaceholder extends StatelessWidget {
         prodCategories: prodCategories,
         prodBadges: prodBadges,
         prodDesc: prodDesc,
+        perfumeData: perfumeData,
       ),
     );
   }
@@ -246,6 +258,7 @@ class ProductImage extends StatelessWidget {
 class ProductData extends StatefulWidget {
   final List<String> prodBadges;
   final String prodDesc, prodName;
+  final Perfume perfumeData;
   final List<Map<String,String>> prodCategories;
 
   const ProductData({
@@ -253,7 +266,8 @@ class ProductData extends StatefulWidget {
     required this.prodBadges,
     required this.prodCategories,
     required this.prodDesc,
-    required this.prodName
+    required this.prodName,
+    required this.perfumeData
   });
 
   @override
@@ -373,17 +387,49 @@ class _ProductDataState extends State<ProductData> {
               ),
             ),
 
-            TextButton(
-                onPressed: (){},
-                style: AppTheme.defaultStyle,
-                child: Text(
-                    'Buy now',
-                  style: TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 40,
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                        OrderStorage.addOrder(widget.perfumeData,1);
+                        AppRoutes.pushReplacement(context, OrderPage(key: UniqueKey()));
+                      },
+                    style: AppTheme.defaultStyle,
+                    child: Text(
+                      'Buy now',
+                      style: TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 40,
 
-                  ),
-                )
+                      ),
+                    )
+                ),
+                const SizedBox(width: 15,),
+                TextButton(
+                    onPressed: (){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Center(
+                            child: Text('Added to cart!',
+                                style: AppTheme.whiteMediumStyle
+                            ),
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      OrderStorage.addOrder(widget.perfumeData,1);
+                    },
+                    style: AppTheme.defaultStyle,
+                    child: Text(
+                      'Add to cart',
+                      style: TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 40,
+
+                      ),
+                    )
+                ),
+              ],
             )
           ],
         );

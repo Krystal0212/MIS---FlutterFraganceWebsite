@@ -1,6 +1,9 @@
+import 'package:eaudelux/presentation/pages/invoice.dart';
+import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
+import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 
 import '../../utils/SharedPreferences/shared_preferences.dart';
@@ -18,43 +21,18 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  final ValueNotifier<List<Map<String, String>>> orderListNotifier =
-        ValueNotifier<List<Map<String, String>>>([
-          {
-            "pid":"1",
-            "pName":"Romano",
-            "pSize":"1.6 Oz",
-            "pPrice":"199",
-            "pQuantity":"10",
-            "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-          },
-          {
-            "pid":"2",
-            "pName":"Nautica",
-            "pSize":"4.8 Oz",
-            "pPrice":"459",
-            "pQuantity":"2",
-            "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-          },
-          {
-            "pid":"3",
-            "pName":"Old Spice Bear Glowes",
-            "pSize":"2.2 Oz",
-            "pPrice":"689",
-            "pQuantity":"1",
-            "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-          },
-        ]);
+  late ValueNotifier<List<Perfume>> orderListNotifier;
 
   @override
   void initState() {
     super.initState();
 
-    OrderStorage.saveOrders(orderListNotifier.value);
+    orderListNotifier = ValueNotifier<List<Perfume>>([]);
+    _loadOrders();
   }
 
   @override
-  void didChangeDependencies() async{
+  void didChangeDependencies(){
     super.didChangeDependencies();
 
     maxWidth = MediaQuery.of(context).size.width;
@@ -66,7 +44,7 @@ class _OrderPageState extends State<OrderPage> {
 
   Future<void> _loadOrders() async {
     final orders = await OrderStorage.loadOrders();
-    orderListNotifier.value = orders; // Update ValueNotifier
+    orderListNotifier.value = orders;
   }
 
   @override
@@ -85,9 +63,52 @@ class _OrderPageState extends State<OrderPage> {
       body: ValueListenableBuilder(
         valueListenable: orderListNotifier,
         builder: (context, orderList, _) {
+          if (orderList.isEmpty) {
+            return CustomScrollView(
+              slivers: [
+                const CustomFloatingSliverTitle(title: 'Current Orders', floatingLevel: 1,),
+
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Card(
+                    color: AppTheme.white,
+                    elevation: 10,
+                    child: Container(
+                      width: maxWidth*0.6,
+                      height: maxHeight*0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.remove_shopping_cart_outlined, color: AppTheme.black, size: 35,),
+                          const SizedBox(width: 15,),
+                          Text(
+                            "No item in cart yet",
+                            style: TextStyle(fontSize: 35, color: AppTheme.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                                    ),
+                  ),
+                ),
+                CustomSliverTextButton(
+                  onPressed: () async {
+                    print(orderList);
+                    orderDialog(context);
+                  },
+                  text: 'Purchase',
+                  isActivated: orderList.isNotEmpty,
+                  primaryColor: AppTheme.primary,
+                  secondaryColor: AppTheme.white,
+                ),
+              ],
+            );
+          }
           return CustomScrollView(
             slivers: [
               const CustomFloatingSliverTitle(title: 'Current Orders', floatingLevel: 1,),
+
               OrderList(
                 orderList: orderList,
                 maxWidth: maxWidth,
@@ -98,7 +119,7 @@ class _OrderPageState extends State<OrderPage> {
                   onPressed: () async {
                     final orders = await OrderStorage.loadOrders();
                     print(orders);
-                    orderDialog(context, orders);
+                    orderDialog(context);
                   },
                   text: 'Purchase',
                   primaryColor: AppTheme.primary,
@@ -112,7 +133,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 }
 
-void orderDialog(BuildContext context, List<Map<String, String>> orders) {
+void orderDialog(BuildContext context) {
   final TextEditingController nameController =
   TextEditingController();
   final TextEditingController phoneController =
@@ -157,7 +178,8 @@ void orderDialog(BuildContext context, List<Map<String, String>> orders) {
               const SizedBox(height: 15),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
+                  AppRoutes.pushReplacement(context, InvoicePage());
                 },
                 style: AppTheme.defaultStyle,
                 child: Text(

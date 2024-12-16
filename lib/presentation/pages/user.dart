@@ -15,7 +15,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   Map<String, String> userInfo = {
     'name': 'Luong Chi Dung',
-    'age': '100',
+    'age': '21',
     'sex': 'Male',
     'phone': '123456789',
     'email': 'Dung@gmail.com',

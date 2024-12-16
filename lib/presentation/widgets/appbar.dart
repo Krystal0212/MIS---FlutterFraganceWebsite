@@ -103,7 +103,7 @@ class ActionsSection extends StatelessWidget {
         children: <Widget>[
           ElevatedButton.icon(
             onPressed: () {
-              AppRoutes.push(context, const UserInfoPage());
+              AppRoutes.pushReplacement(context, UserInfoPage(key: UniqueKey()));
             },
             icon: const Icon(Icons.account_circle),
             label: Text('My Account', style: AppTheme.blackMediumStyle),
@@ -117,7 +117,7 @@ class ActionsSection extends StatelessWidget {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              AppRoutes.push(context, const OrderPage());
+              AppRoutes.pushReplacement(context, OrderPage(key: UniqueKey()));
             },
             icon: const Icon(Icons.shopping_bag),
             label: Text('3 Items', style: AppTheme.blackMediumStyle),
@@ -164,7 +164,7 @@ class NavigatorsSection extends StatelessWidget {
         children: [
           TextNavigatorButton(
             onPressedFunction: () {
-              AppRoutes.push(context, const ProductPage());
+              AppRoutes.push(context,const ProductPage());
             },
             title: 'PERFUMES',
             buttonStyle: AppTheme.navigationProductSectionButtonStyle,

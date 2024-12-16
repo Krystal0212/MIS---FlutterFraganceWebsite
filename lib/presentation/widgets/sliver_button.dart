@@ -10,6 +10,7 @@ class CustomSliverTextButton extends StatelessWidget {
   final String text;
   final double? maxWidth;
   final Color? primaryColor, secondaryColor;
+  final bool? isActivated;
 
   const CustomSliverTextButton({
     super.key,
@@ -17,7 +18,8 @@ class CustomSliverTextButton extends StatelessWidget {
     required this.text,
     this.maxWidth,
     this.primaryColor,
-    this.secondaryColor
+    this.secondaryColor,
+    this.isActivated = true
   });
 
   @override
@@ -47,7 +49,8 @@ class CustomSliverTextButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 25),
         constraints: BoxConstraints(maxWidth: maxWidth??double.infinity),
         child: TextButton(
-            onPressed: onPressed,
+
+            onPressed: isActivated!?onPressed:null,
             style: buttonStyle,
             child: Text(
               text,

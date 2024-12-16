@@ -31,6 +31,7 @@ class ProductGrid extends StatelessWidget {
           delegate: SliverChildBuilderDelegate((context, index) {
             final item = perfumes[index];
             return ProductCard(
+              perfumeData: item,
               imageUrl: item.imageUrl.isNotEmpty
                   ? item.imageUrl
                   : 'https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=300&v=1692754461&width=300',
@@ -40,6 +41,9 @@ class ProductGrid extends StatelessWidget {
               badgeText: 'Hot',
               brand: item.brand,
               onButtonClick: () {
+                AppRoutes.push(context, ProductDetailPage(perfumeData: item));
+              },
+              onBuy: (){
                 AppRoutes.push(context, ProductDetailPage(perfumeData: item));
               },
             );

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 
 
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import '../../utils/styles/themes.dart';
 
 class CustomListTile extends StatelessWidget {
-  final Map<String, String> order;
+  final Perfume order;
   final Function(int) onQuantityChanged;
   final VoidCallback onDelete;
 
@@ -22,7 +23,7 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ValueNotifier<int> quantityNotifier = ValueNotifier(
-        int.parse(order['pQuantity']!)
+        order.quantity
     );
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -36,19 +37,19 @@ class CustomListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TileImg(
-                    imgUrl: order['pImg']!,
+                    imgUrl: order.imageUrl,
                   imgHeight: 200,
                   imgWidth: 200,
                 ),
                 TileContext(
-                  prodName: order['pName']!,
-                  prodSize: order['pSize']!,
+                  prodName: order.name,
+                  prodSize: order.size[0],
                 ),
                 TileActivity(
                   onQuantityChanged: onQuantityChanged,
                   onDelete: onDelete,
                   quantityNotifier: quantityNotifier,
-                  prodPrice: double.parse(order['pPrice']!),
+                  prodPrice: order.price,
                 )
               ],
             ),
@@ -173,7 +174,7 @@ class TileActivity extends StatelessWidget {
 ////////////////////////////////////////////////////////////////////////////////
 
 class CustomViewListTile extends StatelessWidget {
-  final Map<String, String> order;
+  final Perfume order;
 
   const CustomViewListTile({
     super.key,
@@ -194,17 +195,17 @@ class CustomViewListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TileImg(
-                    imgUrl: order['pImg']!,
+                    imgUrl: order.imageUrl,
                   imgWidth: 60,
                   imgHeight: 60,
                 ),
                 ViewTileContext(
-                  prodName: order['pName']!,
-                  prodSize: order['pSize']!,
+                  prodName: order.name,
+                  prodSize: order.size[0],
                 ),
                 ViewTilePricing(
-                  prodPrice: double.parse(order['pPrice']!),
-                  prodQuantity: int.parse(order['pQuantity']!),
+                  prodPrice: order.price,
+                  prodQuantity: order.quantity,
                 )
               ],
             ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/SharedPreferences/shared_preferences.dart';
+import '../model/product_model.dart';
 import 'widgets.dart';
 
 class OrderList extends StatelessWidget {
-  final List<Map<String, String>> orderList;
+  final List<Perfume> orderList;
   final double maxWidth, maxHeight;
 
   final VoidCallback onOrderChanged;
@@ -27,11 +28,11 @@ class OrderList extends StatelessWidget {
           return CustomListTile(
             order: order,
             onQuantityChanged: (newQuantity) async {
-              await OrderStorage.updateOrderQuantity(order['pid']!, newQuantity);
+              await OrderStorage.updateOrderQuantity(order.id, newQuantity);
               onOrderChanged();
             },
             onDelete: () async {
-              await OrderStorage.deleteOrder(order['pid']!);
+              await OrderStorage.deleteOrder(order.id);
               onOrderChanged();
             },
           );
@@ -43,7 +44,7 @@ class OrderList extends StatelessWidget {
 }
 
 class ViewOrderList extends StatelessWidget {
-  final List<Map<String, String>> orderList;
+  final List<Perfume> orderList;
   final double maxWidth, maxHeight;
 
   const ViewOrderList({

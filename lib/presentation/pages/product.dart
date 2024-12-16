@@ -1,7 +1,7 @@
 import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/activity/load_product.dart';
+import '../../utils/activity/load_data.dart';
 import '../model/product_model.dart';
 import '../widgets/pseudo_product_data.dart';
 import '../widgets/widgets.dart';
@@ -67,7 +67,7 @@ class ProductPageState extends State<ProductPage> {
                 ),
                 CustomSliverTextButton(
                     onPressed: (){
-                      AppRoutes.push(context, const ProductPage());
+                      AppRoutes.pushReplacement(context, ProductPage(key: UniqueKey()));
                     },
                     text: 'View more',
                     maxWidth: 400
@@ -76,7 +76,7 @@ class ProductPageState extends State<ProductPage> {
                 ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth, perfumes: perfumes,),
                 CustomSliverTextButton(
                     onPressed: (){
-                      AppRoutes.push(context, const ProductPage());
+                      AppRoutes.pushReplacement(context, ProductPage(key: UniqueKey(),));
                     },
                     text: 'View more',
                     maxWidth: 400

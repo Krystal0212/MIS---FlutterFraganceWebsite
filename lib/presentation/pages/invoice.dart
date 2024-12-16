@@ -3,6 +3,7 @@ import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/SharedPreferences/shared_preferences.dart';
+import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 
 class InvoicePage extends StatefulWidget {
@@ -16,38 +17,12 @@ class InvoicePageState extends State<InvoicePage> {
   late double maxWidth, maxHeight, appBarHeight;
   late Size appBarSize;
 
-  final List<Map<String, String>> orderList = [
-    {
-      "pid":"1",
-      "pName":"Romano",
-      "pSize":"1.6 Oz",
-      "pPrice":"199",
-      "pQuantity":"10",
-      "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-    },
-    {
-      "pid":"2",
-      "pName":"Nautica",
-      "pSize":"4.8 Oz",
-      "pPrice":"459",
-      "pQuantity":"2",
-      "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-    },
-    {
-      "pid":"3",
-      "pName":"Old Spice Bear Glowes",
-      "pSize":"2.2 Oz",
-      "pPrice":"689",
-      "pQuantity":"1",
-      "pImg":"https://loe-cosmetics-us.com/cdn/shop/files/fragrance_laundry.jpg?crop=center&height=200&v=1692754461&width=200",
-    },
-  ];
+  late Future<List<Perfume>> orderList;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-
-    OrderStorage.saveOrders(orderList);
+    orderList = OrderStorage.loadOrders();
   }
 
   @override
@@ -66,33 +41,48 @@ class InvoicePageState extends State<InvoicePage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: appBarSize,
-        child: CustomAppBar(appBarSize: appBarSize,),
+        child: CustomAppBar(appBarSize: appBarSize),
       ),
       body: Center(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 20),
-          width: maxWidth*0.5,
+          width: maxWidth * 0.5,
           decoration: BoxDecoration(
             color: AppTheme.primary.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(15)
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: CustomScrollView(
-            slivers: [
-              const SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                sliver: CustomSliverTitle(title: 'Invoice'),
-              ),
-              Userdata(maxWidth: maxWidth),
-              ViewOrderList(
-                orderList: orderList,
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-              ),
-              InvoicePricingSliver(
-                orderList: orderList,
-                maxWidth: maxWidth,
-              ),
-            ],
+          child: FutureBuilder<List<Perfume>>(
+            future: orderList,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return const Center(child: Text('No orders found.'));
+              }
+
+              final orders = snapshot.data!;
+
+              return CustomScrollView(
+                slivers: [
+                  const SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    sliver: CustomSliverTitle(title: 'Invoice'),
+                  ),
+                  Userdata(maxWidth: maxWidth),
+                  ViewOrderList(
+                    orderList: orders,
+                    maxWidth: maxWidth,
+                    maxHeight: maxHeight,
+                  ),
+                  InvoicePricingSliver(
+                    orderList: orders,
+                    maxWidth: maxWidth,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/styles/themes.dart';
+import '../model/product_model.dart';
 
 class InvoicePricingSliver extends StatelessWidget {
-  final List<Map<String, String>> orderList;
+  final List<Perfume> orderList;
   final double maxWidth;
 
   const InvoicePricingSliver({
@@ -27,12 +28,12 @@ class InvoicePricingSliver extends StatelessWidget {
     );
   }
 
-  double calculatePrice(List<Map<String, String>> orderList) {
+  double calculatePrice(List<Perfume> orderList) {
     double totalPrice = 0.0;
 
     for (var order in orderList) {
-      double price = double.tryParse(order['pPrice'] ?? '0') ?? 0.0;
-      int quantity = int.tryParse(order['pQuantity'] ?? '0') ?? 0;
+      double price = order.price ?? 0.0;
+      int quantity = order.quantity ?? 0;
 
       // Add to total price
       totalPrice += price * quantity;

@@ -1,15 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eaudelux/presentation/model/product_model.dart';
+import 'package:eaudelux/presentation/pages/pages.dart';
 import 'package:eaudelux/presentation/widgets/text_navigator_button.dart';
+import 'package:eaudelux/utils/activity/routing.dart';
 
 import 'package:eaudelux/utils/styles/themes.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../utils/SharedPreferences/order_storage.dart';
+
 class ProductCard extends StatelessWidget {
   final String imageUrl, productId, title, price, brand;
   final String? badgeText;
-  final bool showHoverButton; // Toggle hover button
-  final VoidCallback? onButtonClick; // Action on hover button click
+  final bool showHoverButton;
+  final VoidCallback? onButtonClick;
+  final Function() onBuy;
+  final Perfume perfumeData;
 
   const ProductCard({
     super.key,
@@ -21,6 +28,9 @@ class ProductCard extends StatelessWidget {
     this.badgeText,
     this.showHoverButton = false,
     this.onButtonClick,
+    required this.onBuy,
+    required this.perfumeData
+
   });
 
   @override
@@ -50,7 +60,13 @@ class ProductCard extends StatelessWidget {
               ),
 
               // Cart & buy buttons
-              const Expanded(child: CardActivity(productId: 'pid123'))
+              Expanded(
+                  child: CardActivity(
+                    productId: productId,
+                    onBuy: onBuy,
+                    perfumeData: perfumeData
+                )
+              )
             ],
           ),
         ),
@@ -172,10 +188,14 @@ class CardInfo extends StatelessWidget{
 
 class CardActivity extends StatelessWidget{
   final String productId;
+  final Perfume perfumeData;
+  final Function() onBuy;
 
   const CardActivity({
     super.key,
-    required this.productId
+    required this.productId,
+    required this.onBuy,
+    required this.perfumeData
   });
 
   @override
@@ -199,25 +219,14 @@ class CardActivity extends StatelessWidget{
                       duration: Duration(seconds: 2),
                     ),
                   );
+                  OrderStorage.addOrder(perfumeData,1);
                   print('Add $productId into cart');
                 },
                 color: AppTheme.black,
                 icon: const Icon(Icons.add_shopping_cart)
             ),
             IconButton(
-                onPressed: (){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Center(
-                        child: Text('Added to cart!',
-                            style: AppTheme.whiteMediumStyle
-                        ),
-                      ),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                  print('Buy $productId');
-                },
+                onPressed: onBuy,
                 color: AppTheme.black,
                 icon: const Icon(Icons.shopping_bag_outlined)
             )

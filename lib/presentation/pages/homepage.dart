@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../utils/activity/load_product.dart';
+import '../../utils/activity/load_data.dart';
 import '../model/product_model.dart';
 import '../widgets/pseudo_product_data.dart';
 import '../widgets/widgets.dart';
