@@ -17,19 +17,27 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
 
   // Sample data for orders
   final List<Map<String, String>> orders = [
-    {"id": "001", "status": "Pending"},
-    {"id": "002", "status": "Processing"},
-    {"id": "003", "status": "Completed"},
+    {"id": "oid1", "status": "Completed"},
+    {"id": "oid2", "status": "Processing"},
+    {"id": "oid3", "status": "Completed"},
+    {"id": "oid4", "status": "Pending"},
+    {"id": "oid5", "status": "Cancelled"},
+    {"id": "oid6", "status": "Completed"},
+    {"id": "oid7", "status": "Completed"},
   ];
 
   // Sample customer messages
   final List<Map<String, dynamic>> customerMessages = [
-    {"fromCustomer": true, "message": "I need help with my order"},
-    {"fromCustomer": false, "message": "Sure, could you share your order ID?"},
-    {"fromCustomer": true, "message": "It's 001"},
+    {"fromCustomer": true, "message": "Hello, I need help with an issue on a product I purchased. I received my order, but the bottle of perfume is cracked."},
+    {"fromCustomer": false, "message": "I'm really sorry to hear that! Could you please provide your order ID so I can look into this for you? Can you also describe the damage to the bottle? Is it leaking or just cracked?"},
+    {"fromCustomer": true, "message": "It's oid1. The bottle is cracked, but it's not leaking. It just looks like it was damaged during shipping."},
+    {"fromCustomer": false, "message": "Thank you for that. I'll check your order right away. I'll arrange for a replacement to be sent out immediately. You should receive a confirmation email soon."},
+    {"fromCustomer": true, "message": "Thank you! I appreciate your help."},
+    {"fromCustomer": false, "message": "You're welcome! We're sorry for the inconvenience, and we'll make sure this is resolved quickly."}
   ];
 
-    @override
+
+  @override
   void initState() {
     super.initState();
   }
@@ -41,6 +49,8 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
     deviceHeight = MediaQuery.of(context).size.height;
     appBarSize = Size(deviceWidth, deviceHeight * 0.1);
     bodySize = Size(deviceWidth, deviceHeight * 0.9);
+
+
   }
 
   @override
@@ -77,6 +87,11 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
                           itemCount: orders.length,
                           itemBuilder: (context, index) {
                             final order = orders[index];
+                            bool isPending = order["status"] == 'Pending';
+                            bool isCompleted = order["status"] == 'Completed';
+                            bool isNotCompletedOrCancelled = order["status"] != 'Completed' && order["status"] != 'Cancelled';
+                            bool isProcessing = order["status"] == 'Processing';
+                            bool isDefective = order["status"] == 'Defective';
                             return Card(
                               color: AppColors.white,
                               elevation: 2.0,
@@ -84,29 +99,36 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
                               child: ListTile(
                                 title: Text('Order ID: ${order["id"]}'),
                                 subtitle: Text('Status: ${order["status"]}'),
-                                trailing: PopupMenuButton<String>(
+                                trailing: (!isDefective) ? PopupMenuButton<String>(
+                                  color: AppColors.white,
                                   onSelected: (value) {
                                     // Handle state updates here
-                                    updateOrderState(order["id"] ?? '', value);
+                                    updateOrderState(order, value);
                                   },
                                   itemBuilder: (context) {
-                                    return [
-                                      const PopupMenuItem(
+
+                                     return [
+                                      if(isPending) const PopupMenuItem(
                                         value: 'Processing',
                                         child: Text('Mark as Processing'),
                                       ),
-                                      const PopupMenuItem(
+                                      if(isNotCompletedOrCancelled)const PopupMenuItem(
                                         value: 'Completed',
                                         child: Text('Mark as Completed'),
                                       ),
-                                      const PopupMenuItem(
+                                      if(!isPending)const PopupMenuItem(
+                                        value: 'Defect',
+                                        child: Text('Report problems'),
+                                      ),
+                                      if(isProcessing && !isCompleted && !isNotCompletedOrCancelled)const PopupMenuItem(
                                         value: 'Cancelled',
                                         child: Text('Cancel Order'),
                                       ),
                                     ];
+
                                   },
                                   child: const Icon(Icons.more_vert),
-                                ),
+                                ):const Icon(Icons.error),
                               ),
                             );
                           },
@@ -178,12 +200,66 @@ class _SalesStaffPageState extends State<SalesStaffPage> {
   }
 
   // Method to update order state
-  void updateOrderState(String orderId, String newState) {
-    // Add logic to update order state
+  void updateOrderState(Map<String, String> order, String newState) {
+    int index = orders.indexOf(order);
+    if(newState == 'Processing' || newState == 'Completed' || newState == "Cancelled"){
+      setState(() {
+        orders[index]["status"] = newState;
+      });
+    } else if (newState == 'Defect') {
+      // Show dialog when "Report problems" is selected
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            TextEditingController _controller = TextEditingController();
+            return AlertDialog(
+              backgroundColor: AppColors.white,
+              title: const Text('Report a Problem'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Please describe the issue with your order:'),
+                    const SizedBox(height: 30,),
+                    SizedBox(
+                      width: deviceWidth*0.3,
+                      child: TextField(
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter the problem here...',
+                          border: OutlineInputBorder(),
+                        ), // Allow multiple lines
+                      ),
+                    ),
+                  ],),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      orders[index]["status"]="Defective";
+                    });
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('Report'),
+                ),
+              ],
+            );
+          },
+      );
+  }
   }
 
   // Method to send a support message
   void sendSupportMessage(String message) {
-    // Add logic to send a support message
+      Map<String, dynamic> response = {"fromCustomer": false, "message": message};
+
+      setState(() {
+        customerMessages.add(response);
+      });
   }
 }

@@ -76,6 +76,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               prodCategories: prodCategories,
               prodBadges: prodBadges,
               perfume: perfume,
+              role: role,
             ),
           ],
         ));
@@ -88,6 +89,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
   final List<Map<String, String>> prodCategories;
   final List<String> prodBadges;
   final Perfume perfume;
+  final String role;
 
   const ProductGeneralPlaceholder({
     super.key,
@@ -96,7 +98,7 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     required this.maxHeight,
     required this.prodCategories,
     required this.prodBadges,
-    required this.perfume,
+    required this.perfume, required this.role,
   });
 
   @override
@@ -112,11 +114,15 @@ class ProductGeneralPlaceholder extends StatelessWidget {
             children: [
               ProductImage(imgUrl: imgUrl),
               const SizedBox(width: 50),
-              ProductDetailPlaceholder(
-                perfume: perfume,
-                prodCategories: prodCategories,
-                prodBadges: prodBadges,
-              ),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 600), // Limit width
+            child: ProductData(
+              perfume: perfume,
+              prodCategories: prodCategories,
+              prodBadges: prodBadges,
+              role: role,
+            ),
+          )
             ],
           ),
         ),
@@ -124,49 +130,52 @@ class ProductGeneralPlaceholder extends StatelessWidget {
     );
   }
 }
-
-class ProductDetailPlaceholder extends StatelessWidget {
-  final List<Map<String, String>> prodCategories;
-  final List<String> prodBadges;
-  final Perfume perfume;
-
-  const ProductDetailPlaceholder(
-      {super.key,
-      required this.prodCategories,
-      required this.prodBadges,
-      required this.perfume});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 600), // Limit width
-      child: ProductData(
-        perfume: perfume,
-        prodCategories: prodCategories,
-        prodBadges: prodBadges,
-      ),
-    );
-  }
-}
-
-class ProductDescriptionPlaceholder extends StatelessWidget {
-  final Map<String, String> prodDescriptions;
-  final double maxWidth;
-
-  const ProductDescriptionPlaceholder(
-      {super.key, required this.prodDescriptions, required this.maxWidth});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        width: maxWidth * 0.8,
-        child: ProductDetail(
-            prodDescription: prodDescriptions, maxWidth: maxWidth),
-      ),
-    );
-  }
-}
+//
+// class ProductDetailPlaceholder extends StatelessWidget {
+//   final List<Map<String, String>> prodCategories;
+//   final List<String> prodBadges;
+//   final Perfume perfume;
+//   final String role;
+//
+//   const ProductDetailPlaceholder(
+//       {super.key,
+//       required this.prodCategories,
+//       required this.prodBadges,
+//       required this.perfume,
+//       required this.role});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       constraints: const BoxConstraints(maxWidth: 600), // Limit width
+//       child: ProductData(
+//         perfume: perfume,
+//         prodCategories: prodCategories,
+//         prodBadges: prodBadges,
+//         role: role,
+//       ),
+//     );
+//   }
+// }
+//
+// class ProductDescriptionPlaceholder extends StatelessWidget {
+//   final Map<String, String> prodDescriptions;
+//   final double maxWidth;
+//
+//   const ProductDescriptionPlaceholder(
+//       {super.key, required this.prodDescriptions, required this.maxWidth});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SliverToBoxAdapter(
+//       child: SizedBox(
+//         width: maxWidth * 0.8,
+//         child: ProductDetail(
+//             prodDescription: prodDescriptions, maxWidth: maxWidth),
+//       ),
+//     );
+//   }
+// }
 
 class RelatedProductSuggestion extends StatelessWidget {
   const RelatedProductSuggestion({super.key});
@@ -215,12 +224,14 @@ class ProductData extends StatefulWidget {
   final List<String> prodBadges;
   final List<Map<String, String>> prodCategories;
   final Perfume perfume;
+  final String role;
 
   const ProductData(
       {super.key,
       required this.prodBadges,
       required this.prodCategories,
-      required this.perfume});
+      required this.perfume,
+      required this.role});
 
   @override
   State<ProductData> createState() => _ProductDataState();
@@ -325,7 +336,7 @@ class _ProductDataState extends State<ProductData> {
                 style: TextStyle(fontSize: 55, color: AppTheme.black),
               ),
             ),
-            TextButton(
+            if(widget.role == "Operation Director") TextButton(
                 onPressed: () {
                   AppRequest.showRestockDialog(context, widget.perfume, false);
                 },

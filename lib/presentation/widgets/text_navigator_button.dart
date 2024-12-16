@@ -16,7 +16,7 @@ class TextNavigatorButton extends StatelessWidget {
         style: buttonStyle,
         child: Text(
           title,
-          style: AppTheme.blackMediumStyle,
+          style: (title != 'Login') ? AppTheme.blackMediumStyle : AppTheme.blackMediumStyle.copyWith(fontSize: 20),
         ));
   }
 }

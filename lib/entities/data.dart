@@ -66,7 +66,7 @@ class DataSample {
         stock: [10, 5, 5],
         price: [95.0, 100.0, 110.0],
         unitCost: [40.0, 45.0, 50.0],
-        sizes: [3, 5, 6.4],
+        sizes: [3.0, 5.0, 6.4],
         brand: Brand(name: 'Dior'),
         sizeType: 'ml',
         description:

@@ -14,15 +14,22 @@ class RestockRequest {
   });
 }
 
-class RestockRequestList extends StatelessWidget {
+class RestockRequestList extends StatefulWidget {
   final List<RestockRequest> restockRequests;
 
   const RestockRequestList({super.key, required this.restockRequests});
 
+  @override
+  State<RestockRequestList> createState() => _RestockRequestListState();
+}
+
+class _RestockRequestListState extends State<RestockRequestList> {
   // Method to update the status (Approve/Reject)
   void updateRequestStatus(RestockRequest request, String newStatus) {
     // This is where you can update the request's status, such as calling an API to approve or reject.
-    request.status = newStatus;
+    setState(() {
+      request.status = newStatus;
+    });
   }
 
   Color _getStatusColor(String status) {
@@ -54,9 +61,9 @@ class RestockRequestList extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: restockRequests.length,
+            itemCount: widget.restockRequests.length,
             itemBuilder: (context, index) {
-              final request = restockRequests[index];
+              final request = widget.restockRequests[index];
               return Card(
                 color: AppColors.white,
                 margin: const EdgeInsets.symmetric(vertical: 8.0),

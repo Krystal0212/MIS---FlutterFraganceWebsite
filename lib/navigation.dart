@@ -1,8 +1,3 @@
-import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashboard.dart';
-import 'package:eaudelux/presentation/pages/sales_actions_center/sales_ation_center.dart';
-import 'package:eaudelux/presentation/pages/sales_dashboard/sales_dashboard.dart';
-import 'package:eaudelux/presentation/pages/sales_management_page/sales_management.dart';
-import 'package:eaudelux/presentation/pages/trends_prediction/trend_prediction.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class RoleSelectionPage extends StatelessWidget {

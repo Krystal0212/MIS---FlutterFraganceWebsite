@@ -245,10 +245,7 @@ class AppRequest {
                   // Size Selection
                   const Text('Size'),
                   dropdown.MyDropdown(options: perfume.sizes.map((size) {
-                      return DropdownMenuItem<double>(
-                        value: size,
-                        child: Text('$size ${perfume.sizeType}'),
-                      );
+                      return '$size ${perfume.sizeType}';
                     }).toList(), title: 'Select Size', content: 'Size', selected: selectedSize.toString()),
 
                   const SizedBox(height: 20),

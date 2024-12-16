@@ -1,4 +1,4 @@
-import 'package:eaudelux/presentation/pages/inventory_dashboard/inventory_dashboard.dart';
+import 'package:eaudelux/presentation/pages/login/login.dart';
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
 class InventoryAppBar extends StatelessWidget {
@@ -53,7 +53,10 @@ class InventoryAppBar extends StatelessWidget {
                       colorFilter: const ColorFilter.mode(AppColors.white,
                           BlendMode.srcIn), // Adjust the color if required
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => const LoginPage()));
+                    },
                   ),
                 ),
               ],
@@ -126,7 +129,10 @@ class SalesAppBar extends StatelessWidget {
                       colorFilter: const ColorFilter.mode(AppColors.white,
                           BlendMode.srcIn), // Adjust the color if required
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                    },
                   ),
                 ),
               ],

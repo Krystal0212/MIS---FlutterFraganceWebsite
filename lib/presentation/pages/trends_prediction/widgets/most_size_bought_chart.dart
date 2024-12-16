@@ -1,15 +1,15 @@
 import 'package:eaudelux/presentation/widgets/import_packages.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 
 class MostBoughtSizesChart extends StatelessWidget {
+  const MostBoughtSizesChart({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300,
       child: BarChart(
         BarChartData(
-          gridData: FlGridData(show: false),
+          gridData: const FlGridData(show: false),
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -18,21 +18,21 @@ class MostBoughtSizesChart extends StatelessWidget {
                 getTitlesWidget: (value, meta) {
                   switch (value.toInt()) {
                     case 0:
-                      return Text('0.8 Oz');
+                      return const Text('0.8 Oz');
                     case 1:
-                      return Text('1.6 Oz');
+                      return const Text('1.6 Oz');
                     case 2:
-                      return Text('2.4 Oz');
+                      return const Text('2.4 Oz');
                     case 3:
-                      return Text('3.2 Oz');
+                      return const Text('3.2 Oz');
                     case 4:
-                      return Text('4.0 Oz');
+                      return const Text('4.0 Oz');
                     case 5:
-                      return Text('4.8 Oz');
+                      return const Text('4.8 Oz');
                     case 6:
-                      return Text('5.6 Oz');
+                      return const Text('5.6 Oz');
                     default:
-                      return Text('');
+                      return const Text('');
                   }
                 },
               ),
@@ -45,8 +45,8 @@ class MostBoughtSizesChart extends StatelessWidget {
                 getTitlesWidget: (value, meta) => Text(value.toInt().toString()),
               ),
             ),
-            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
           borderData: FlBorderData(
             show: true,
@@ -60,7 +60,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 20,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -71,7 +71,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 33,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -82,7 +82,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 56,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -93,7 +93,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 89,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -104,7 +104,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 142,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -115,7 +115,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 42,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),
@@ -126,7 +126,7 @@ class MostBoughtSizesChart extends StatelessWidget {
                   toY: 16,
                   width: 20,
                   color: AppColors.erieBlack,
-                  gradient: LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
+                  gradient: const LinearGradient(colors: [AppColors.pelati, AppColors.sangoRed]),
                 ),
               ],
             ),

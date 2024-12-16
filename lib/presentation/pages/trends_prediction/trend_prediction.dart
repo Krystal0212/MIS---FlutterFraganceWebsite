@@ -30,36 +30,37 @@ class _TrendPredictPageState extends State<TrendPredictPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-      preferredSize: Size(appBarSize.width, appBarSize.height),
-      child: SalesAppBar(appBarSize: appBarSize, role: 'CEO'),
-    ),
+        preferredSize: Size(appBarSize.width, appBarSize.height),
+        child: SalesAppBar(appBarSize: appBarSize, role: 'CEO'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Customer Prediction Chart
             Card(
               child: Container(
+                width: deviceWidth,
                 padding: const EdgeInsets.all(20.0),
                 margin: const EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
                     const Text(
                       'Visualizing customer buy perfume by gender',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
-                      ),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                         height: 300,
-                        width: deviceWidth*0.5,
-                        child: const CustomerPredictionChart()
-                    ),
-                    SizedBox(
-                      width: deviceWidth*0.5,
-                      child: const Text(
-                        '''
-                        
+                        width: deviceWidth * 0.5,
+                        child: const CustomerPredictionChart()),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: deviceWidth * 0.5,
+                          child: const Text(
+                            '''
                         
                         Summary Analysis of Perfume Purchases by Gender
                         
@@ -67,50 +68,59 @@ class _TrendPredictPageState extends State<TrendPredictPage> {
                         - 74% of perfume purchases are made by female customers.
                         - 26% are made by male customers.
                         
-                        Recommendations:
-                        
-                        1. Prioritize Women's Perfumes:
-                        2. Targeted Marketing for Female Customers:
-                        3. Maintain Men's Fragrance Selection:
-                        4. Introduce Unisex Fragrances:
-                        
                         ''',
-                        style: TextStyle(
-                          fontSize: 24,
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: deviceWidth * 0.4,
+                          child: const Text(
+                            '''
+                        
+Recommendations:
+                        
+1. Prioritize Women's Perfumes: Floral and fruity scents.  
+2. Targeted Marketing for Female Customers: Promote bestsellers.  
+3. Maintain Men's Fragrance Selection: Stock classics.  
+4. Introduce Unisex Fragrances: Launch versatile scents.  
+
+                        ''',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              
               ),
             ),
-        
+
             const Divider(),
             // Most Bought Sizes Chart
             Card(
               child: Container(
+                width: deviceWidth,
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     const Text(
                       'Visualizing size trends of all fragrances',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
-                      ),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                        height: 500,
-                        width: deviceWidth*0.5,
-                        child: MostBoughtSizesChart()
-                    ),
+                        height: 400,
+                        width: deviceWidth * 0.3,
+                        child: const MostBoughtSizesChart()),
                     SizedBox(
-                      width: deviceWidth*0.5,
+                      width: deviceWidth * 0.7,
                       child: const Text(
                         '''
-                        
-                        
+    
         Analysis of Most Bought Perfume Sizes
         Recent sales data from the bar chart indicates the popularity of different perfume sizes among customers:
         
@@ -136,12 +146,11 @@ class _TrendPredictPageState extends State<TrendPredictPage> {
                         ),
                       ),
                     ),
-              
                   ],
                 ),
               ),
             ),
-        
+
             const Divider(),
             // Product Trends Chart
             Card(
@@ -151,18 +160,15 @@ class _TrendPredictPageState extends State<TrendPredictPage> {
                   children: [
                     const Text(
                       'Visualizing product trends that is bought the most',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
-                      ),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                         height: 500,
-                        width: deviceWidth*0.5,
-                        child: const ProductTrendsChart()
-                    ),
+                        width: deviceWidth,
+                        child: const ProductTrendsChart()),
                     SizedBox(
-                      width: deviceWidth*0.5,
+                      width: deviceWidth * 0.8,
                       child: const Text(
                         '''
                         
