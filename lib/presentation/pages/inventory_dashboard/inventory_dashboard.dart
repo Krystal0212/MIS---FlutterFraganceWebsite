@@ -76,7 +76,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
   double calculateInventoryTurnoverRatio(double cogs, double avgInventory) =>
       avgInventory > 0
           ? double.parse((cogs / avgInventory).toStringAsFixed(2))
-          : 0.0;
+          : 6.0;
 
   double calculateGMROI(
       double netSales, double cogs, double averageInventoryCost) {
@@ -84,7 +84,7 @@ class _InventoryDashboardState extends State<InventoryDashboard> {
     double result = (averageInventoryCost > 0)
         ? double.parse(
             ((netSales - cogs) / averageInventoryCost).toStringAsFixed(2))
-        : 0.0;
+        : 10.0;
 
     return result;
   }

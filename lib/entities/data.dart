@@ -6,25 +6,25 @@ import 'package:eaudelux/presentation/pages/inventory_dashboard/widgets/restock_
 
 class DataSample {
   static const String urlDiorSauvage =
-      'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Library-Sites-DiorSharedLibrary/default/dw7a190948/images/beauty/01-FRAGRANCES/2024/RENO_SAUVAGE/SVG_EF_Mood_Hero-Solo_3000x3000-1.jpg?sw=640';
+      'https://product.hstatic.net/1000340570/product/dior-sauvage-eau-de-toilette-100ml_36e992d44a0a445ca78551e4d54626f6_master.jpg';
   static const String urlDiorHomme =
-      "https://cdn.vuahanghieu.com/unsafe/0x900/left/top/smart/filters:quality(90)/https://admin.vuahanghieu.com/upload/product/2024/05/nuoc-hoa-nam-dior-homme-ban-2020-edp-intense-100ml-664c122bb34e9-21052024101659.jpg";
+      "https://product.hstatic.net/1000340570/product/dior-homme-_2020_-1_6c94dab996ba4d8582f6e0080652c934_master.jpg";
   static const String urlGucciBloom =
-      "https://media.gucci.com/style/DarkGray_Center_0_0_2400x2400/1545327905/488830_99999_0099_001_100_0000_Light-Gucci-Bloom-100ml-eau-de-parfum.jpg";
+      "https://product.hstatic.net/1000340570/product/gucci_bloom_intense_f8d8a691e77b46758e53c399b83b2ddd_master.jpeg";
   static const String urlGucciGuilty =
       "https://product.hstatic.net/1000340570/product/gucci-guilty-pour-homme-eau-de-parfum-50ml_2079ce53f39f4878bc02340e93e457be_master.jpg";
   static const String urlTomFordBlackOrchid =
-      "https://theperfume.vn/wp-content/uploads/2017/07/Tom-Ford-Black-Orchid-4-1-e1667273535459-340x340.jpg";
+      "https://product.hstatic.net/1000340570/product/tom-ford-black-orchid_4af20be652c44080819ea9e7115f7852_master.jpg";
   static const String urlTomFordOudWood =
-      "https://theperfume.vn/wp-content/uploads/2021/01/Nuoc-hoa-Tom-Ford-Oud-Wood-100ml-340x340.jpg";
+      "https://product.hstatic.net/1000340570/product/tom-ford-oud-wood-50ml_f13af8f727844b449ab792fee47d2f9a_master.jpg";
   static const String urlArmaniCode =
-      "https://cdn.vuahanghieu.com/unsafe/0x900/left/top/smart/filters:quality(90)/https://admin.vuahanghieu.com/upload/product/2024/05/nuoc-hoa-nam-giorgio-armani-code-parfum-125ml-663c33cf75b57-09052024092415.jpg";
+      "https://product.hstatic.net/1000340570/product/armani-code-for-women-edp_5a14dfd3f98f4f039ff81f48835d3e8b_master.jpg";
   static const String urlArmaniSi =
       "https://product.hstatic.net/1000340570/product/si-eau-de-parfum_2e2e9b13f4af443d9e91ed05c9f0aaa7_master.jpg";
   static const String urlYvesSaintLaurentBlackOpium =
-      "https://theperfume.vn/wp-content/uploads/2022/02/Black-Opium-Extreme-EDP-1-340x340.jpg";
+      "https://product.hstatic.net/1000340570/product/nuoc-hoa-yves-saint-laurent-black-opium-neon-edp_644226317dbd460d975eef27c47f2f12_master.jpg";
   static const String urlYvesSaintLaurentBlackLibre =
-      "https://theperfume.vn/wp-content/uploads/2021/11/Nuoc-hoa-YSL-Libre-90ml-e1670840224326-300x300.png";
+      "https://product.hstatic.net/1000340570/product/libre-edt_6caa3634e13740c78c951a4b681c1ab6_master.jpg";
   static const String urlHermesTerreHermes =
       "https://theperfume.vn/wp-content/uploads/2017/04/Terre-dHermes-Parfum-1-340x340.jpg";
   static const String urlHermesVoyageHermes =
