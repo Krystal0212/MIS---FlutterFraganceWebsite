@@ -213,6 +213,7 @@ void orderDialog(BuildContext context) {
                       }).toList(),
                       onChanged: (value) {
                         selectedPaymentMethod = value;
+                        print(selectedPaymentMethod);
                       },
                     ),
                   ],
@@ -224,6 +225,7 @@ void orderDialog(BuildContext context) {
                   Navigator.of(context).pop();
                   AppRoutes.push(context, InvoicePage(
                     selectedDiscountValue: selectedDiscountValue,
+                    paymentMethod: selectedPaymentMethod.toString(),
                     name: nameController.text,
                     phone: phoneController.text,
                     email: emailController.text,

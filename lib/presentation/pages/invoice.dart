@@ -1,4 +1,6 @@
 import 'package:boxy/slivers.dart';
+import 'package:eaudelux/presentation/pages/homepage.dart';
+import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +10,7 @@ import '../widgets/widgets.dart';
 
 class InvoicePage extends StatefulWidget {
   final int selectedDiscountValue;
-  final String? name, phone, address, email;
+  final String? name, phone, address, email, paymentMethod;
 
   const InvoicePage({
     super.key,
@@ -16,7 +18,8 @@ class InvoicePage extends StatefulWidget {
     this.name,
     this.email,
     this.address,
-    this.phone
+    this.phone,
+    this.paymentMethod
   });
 
   @override
@@ -86,6 +89,7 @@ class InvoicePageState extends State<InvoicePage> {
                     phone: widget.phone,
                     address: widget.address,
                     email: widget.email,
+                    paymentMethod: widget.paymentMethod,
                   ),
                   ViewOrderList(
                     orderList: orders,
@@ -97,6 +101,12 @@ class InvoicePageState extends State<InvoicePage> {
                     maxWidth: maxWidth,
                     discountValue: widget.selectedDiscountValue,
                   ),
+                  CustomSliverTextButton(
+                      onPressed: (){
+                        showThankYouDialog(context);
+                      },
+                      text: 'Confirm Purchase'
+                  )
                 ],
               );
             },
@@ -105,4 +115,37 @@ class InvoicePageState extends State<InvoicePage> {
       ),
     );
   }
+}
+
+void showThankYouDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        title: const Text(
+          'Thank You!',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          'Your purchase was successful.\nWe appreciate your business!',
+          style: TextStyle(fontSize: 18),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              AppRoutes.pushReplacement(context, const HomePage());
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }

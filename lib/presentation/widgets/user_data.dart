@@ -4,7 +4,7 @@ import '../../utils/styles/themes.dart';
 
 class Userdata extends StatelessWidget {
   final double maxWidth;
-  final String? name, phone, email, address;
+  final String? name, phone, email, address, paymentMethod;
 
   const Userdata({
     super.key,
@@ -12,23 +12,42 @@ class Userdata extends StatelessWidget {
     this.name,
     this.phone,
     this.email,
-    this.address
+    this.address,
+    this.paymentMethod
   });
 
   @override
   Widget build(BuildContext context) {
-    String? _name, _phone, _email, _address;
+    String _name, _phone, _email, _address, _paymentMethod;
     if (name == ''){
        _name = 'Luong Chi Dung';
+    }
+    else {
+      _name = name!;
     }
     if (phone == ''){
        _phone = '0123456789';
     }
+    else {
+      _phone = phone!;
+    }
     if (email == ''){
        _email = 'Dung@gmail.com';
     }
+    else {
+      _email = email!;
+    }
     if (address == ''){
        _address = '9999 Doan Van Bo';
+    }
+    else {
+      _address = address!;
+    }
+    if (paymentMethod == '' || paymentMethod == null){
+      _paymentMethod = 'Bank';
+    }
+    else {
+      _paymentMethod = paymentMethod!;
     }
     return SliverToBoxAdapter(
       child: Container(
@@ -57,7 +76,7 @@ class Userdata extends StatelessWidget {
               ),
               UserLabelAndData(
                 title: 'Payment:',
-                data: address??'COD',
+                data: _paymentMethod!,
               ),
             ],
           ),
