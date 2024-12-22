@@ -7,7 +7,17 @@ import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 
 class InvoicePage extends StatefulWidget {
-  const InvoicePage({super.key});
+  final int selectedDiscountValue;
+  final String? name, phone, address, email;
+
+  const InvoicePage({
+    super.key,
+    required this.selectedDiscountValue,
+    this.name,
+    this.email,
+    this.address,
+    this.phone
+  });
 
   @override
   State<StatefulWidget> createState() => InvoicePageState();
@@ -70,7 +80,13 @@ class InvoicePageState extends State<InvoicePage> {
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     sliver: CustomSliverTitle(title: 'Invoice'),
                   ),
-                  Userdata(maxWidth: maxWidth),
+                  Userdata(
+                      maxWidth: maxWidth,
+                    name: widget.name,
+                    phone: widget.phone,
+                    address: widget.address,
+                    email: widget.email,
+                  ),
                   ViewOrderList(
                     orderList: orders,
                     maxWidth: maxWidth,
@@ -79,6 +95,7 @@ class InvoicePageState extends State<InvoicePage> {
                   InvoicePricingSliver(
                     orderList: orders,
                     maxWidth: maxWidth,
+                    discountValue: widget.selectedDiscountValue,
                   ),
                 ],
               );

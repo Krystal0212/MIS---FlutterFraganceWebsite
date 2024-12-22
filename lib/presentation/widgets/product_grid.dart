@@ -9,12 +9,14 @@ import 'pseudo_product_data.dart';
 class ProductGrid extends StatelessWidget {
   final double maxHeight, maxWidth;
   final List<Perfume> perfumes;
+  final int? productCount;
 
   const ProductGrid({
     super.key,
     required this.maxHeight,
     required this.maxWidth,
-    required this.perfumes
+    required this.perfumes,
+    this.productCount = -1
   });
 
   @override
@@ -48,7 +50,7 @@ class ProductGrid extends StatelessWidget {
               },
             );
           },
-          childCount: perfumes.length),
+          childCount: productCount! < 0? perfumes.length:productCount),
       ),
     );
   }

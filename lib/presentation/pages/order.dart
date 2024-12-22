@@ -3,6 +3,7 @@ import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/activity/load_data.dart';
 import '../model/product_model.dart';
 import '../widgets/widgets.dart';
 
@@ -143,6 +144,10 @@ void orderDialog(BuildContext context) {
   final TextEditingController emailController =
   TextEditingController();
 
+  String? selectedDiscountTitle, selectedPaymentMethod;
+  int selectedDiscountValue = 0;
+  List<String> paymentMethods = ['Bank', 'Momo', 'ZaloPay', 'Visa'];
+
   showDialog(
     context: context,
     builder: (context) {
@@ -153,7 +158,7 @@ void orderDialog(BuildContext context) {
         child: Container(
           padding: const EdgeInsets.all(16),
           width: 800,
-          height: 500,
+          height: 650,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -172,6 +177,44 @@ void orderDialog(BuildContext context) {
                     TitleWithTextBox(title: 'Address:',controller: addressController,),
                     TitleWithTextBox(title: 'Phone Number:',controller: phoneController,),
                     TitleWithTextBox(title: 'Email:',controller: emailController,),
+                    const SizedBox(height: 20),
+                    // Dropdown for selecting discount
+                    DropdownButtonFormField<Map<String, dynamic>>(
+                      decoration: const InputDecoration(
+                        labelText: 'Choose Discount',
+                        border: OutlineInputBorder(),
+                      ),
+                      value: null,
+                      items: vouchers.map((voucher) {
+                        return DropdownMenuItem(
+                          value: voucher,
+                          child: Text('${voucher['title']} (${voucher['discount']}%)'),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        selectedDiscountTitle = value?['title'];
+                        selectedDiscountValue = value?['discount'] ?? 0;
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
+                    // Dropdown for selecting payment method
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Choose Payment Method',
+                        border: OutlineInputBorder(),
+                      ),
+                      value: selectedPaymentMethod,
+                      items: paymentMethods.map((method) {
+                        return DropdownMenuItem(
+                          value: method,
+                          child: Text(method),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        selectedPaymentMethod = value;
+                      },
+                    ),
                   ],
                 )
               ),
@@ -179,7 +222,13 @@ void orderDialog(BuildContext context) {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  AppRoutes.pushReplacement(context, InvoicePage());
+                  AppRoutes.push(context, InvoicePage(
+                    selectedDiscountValue: selectedDiscountValue,
+                    name: nameController.text,
+                    phone: phoneController.text,
+                    email: emailController.text,
+                    address: addressController.text,
+                  ));
                 },
                 style: AppTheme.defaultStyle,
                 child: Text(
@@ -195,15 +244,6 @@ void orderDialog(BuildContext context) {
   );
 }
 
-/*
-* Text(
-    'You have purchased products successfully',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: 20,
-    ),
-  )
-* */
 
 
 

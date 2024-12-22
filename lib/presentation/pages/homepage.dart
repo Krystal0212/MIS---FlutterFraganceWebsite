@@ -1,3 +1,5 @@
+import 'package:eaudelux/presentation/pages/product.dart';
+import 'package:eaudelux/utils/activity/routing.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../utils/activity/load_data.dart';
@@ -68,6 +70,7 @@ class HomePageState extends State<HomePage>
   void dispose() {
     _pageViewController.dispose();
     _tabController.dispose();
+    _timerAnimationController.dispose();
     super.dispose();
   }
 
@@ -101,18 +104,25 @@ class HomePageState extends State<HomePage>
 
               const CustomSliverTitle(title: 'Most purchased'),
               ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth,
-                perfumes: perfumes,),
+                perfumes: perfumes,
+                productCount: 12,
+              ),
               CustomSliverTextButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    AppRoutes.push(context, const ProductPage());
+                  },
                   text: 'View more',
                   maxWidth: 400
               ),
 
               const CustomSliverTitle(title: 'Latest'),
               ProductGrid(maxHeight: maxHeight, maxWidth: maxWidth,
-                perfumes: perfumes,),
+                perfumes: perfumes,
+                productCount: 12,),
               CustomSliverTextButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    AppRoutes.push(context, const ProductPage());
+                  },
                   text: 'View more',
                   maxWidth: 400
               ),
@@ -124,9 +134,6 @@ class HomePageState extends State<HomePage>
     );
   }
 
-  /*
-
-   */
 
   /// Lazy import...
   Widget pagingAdvertisement(double maxWidth){

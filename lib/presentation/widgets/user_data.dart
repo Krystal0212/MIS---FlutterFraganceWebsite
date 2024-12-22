@@ -17,30 +17,47 @@ class Userdata extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? _name, _phone, _email, _address;
+    if (name == ''){
+       _name = 'Luong Chi Dung';
+    }
+    if (phone == ''){
+       _phone = '0123456789';
+    }
+    if (email == ''){
+       _email = 'Dung@gmail.com';
+    }
+    if (address == ''){
+       _address = '9999 Doan Van Bo';
+    }
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: maxWidth*0.8,
         child: Card(
           color: AppTheme.white,
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               UserLabelAndData(
                 title: 'Name:',
-                data: 'Luong Chi Dung',
+                data: _name!,
               ),
               UserLabelAndData(
                 title: 'Phone Number:',
-                data: '0123456789',
+                data: _phone!,
               ),
               UserLabelAndData(
                 title: 'Email:',
-                data: 'Dung@gmail.com',
+                data: _email!,
               ),
               UserLabelAndData(
                 title: 'Address:',
-                data: '9999 Doan Van Bo',
+                data: _address!,
+              ),
+              UserLabelAndData(
+                title: 'Payment:',
+                data: address??'COD',
               ),
             ],
           ),

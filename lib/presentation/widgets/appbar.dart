@@ -1,4 +1,5 @@
 import 'package:eaudelux/presentation/pages/pages.dart';
+import 'package:eaudelux/presentation/pages/voucher.dart';
 import 'package:eaudelux/presentation/widgets/text_navigator_button.dart';
 import 'package:eaudelux/utils/styles/colours.dart';
 import 'package:eaudelux/utils/styles/themes.dart';
@@ -183,6 +184,14 @@ class NavigatorsSection extends StatelessWidget {
               AppRoutes.push(context, const ProductPage());
             },
             title: 'GIFTS',
+            buttonStyle: AppTheme.navigationProductSectionButtonStyle,
+          ),
+          const SizedBox(width: 50),
+          TextNavigatorButton(
+            onPressedFunction: () {
+              AppRoutes.push(context, const VoucherPage());
+            },
+            title: 'VOUCHERS',
             buttonStyle: AppTheme.navigationProductSectionButtonStyle,
           ),
         ],

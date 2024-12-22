@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:eaudelux/utils/styles/themes.dart';
 import 'package:flutter/services.dart';
 import 'package:csv/csv.dart';
 
@@ -56,3 +57,34 @@ List<User> generatePseudoUsers() {
     );
   });
 }
+
+List<Map<String,dynamic>> vouchers = [
+  {
+    'imgTitle':'Discount',
+    'imgColor': AppTheme.primary,
+    'title':'New guest gifts',
+    'subtitle':'Apply 15% discount for first purchase',
+    'discount': 15,
+  },
+  {
+    'imgTitle':'Discount',
+    'imgColor': AppTheme.primary,
+    'title':'Christmas surprise',
+    'subtitle':'Apply 24% discount for next purchase',
+    'discount': 24,
+  },
+  {
+    'imgTitle':'Compensate',
+    'imgColor': AppTheme.error,
+    'title':'Compensate voucher',
+    'subtitle':'Apply 25% discount for next purchase',
+    'discount': 25,
+  },
+  {
+    'imgTitle':'Compensate',
+    'imgColor': AppTheme.error,
+    'title':'Compensate voucher',
+    'subtitle':'Apply 100% discount for specific product',
+    'discount': 100,
+  },
+];

@@ -47,6 +47,7 @@ class CustomSliverTextButton extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.all(20),
         constraints: BoxConstraints(maxWidth: maxWidth??double.infinity),
         child: TextButton(
 
