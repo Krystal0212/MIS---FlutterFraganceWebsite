@@ -82,7 +82,7 @@ class UserImageProfile extends StatelessWidget {
                   maxHeightDiskCache: 300,
                   maxWidthDiskCache: 300,
                   imageUrl:
-                  'https://static.scientificamerican.com/dam/m/4aaa836e513fa8a5/original/krijn_neanderthal_face_reconstruction.jpg?m=1728652157.415&w=600',
+                  'https://cdn.pixabay.com/photo/2023/07/14/19/36/ai-generated-8127609_1280.jpg',
                   errorWidget: (context, url, error) => Center(
                     child: Icon(
                       Icons.image_not_supported_outlined,

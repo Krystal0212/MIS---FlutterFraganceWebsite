@@ -21,7 +21,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     'email': 'Dung@gmail.com',
   };
 
-  String imgLink = 'https://preview.keenthemes.com/metronic-v4/theme/assets/pages/media/profile/people19.png';
+  String imgLink = 'https://imgcdn.stablediffusionweb.com/2024/2/24/4abb7f5d-c625-4f72-88dc-3da18e45aad9.jpg';
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   void _changeProfileImage() {
     setState(() {
-      imgLink = 'https://static.scientificamerican.com/dam/m/4aaa836e513fa8a5/original/krijn_neanderthal_face_reconstruction.jpg?m=1728652157.415&w=600';
+      imgLink = 'https://imgcdn.stablediffusionweb.com/2024/2/24/4abb7f5d-c625-4f72-88dc-3da18e45aad9.jpg';
     });
   }
 
