@@ -23,7 +23,7 @@ class AppTheme {
       letterSpacing: 0.60);
 
   static TextStyle get whiteMediumStyle => TextStyle(
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: FontWeight.w500,
       color: white,
       letterSpacing: 0.60);
@@ -31,11 +31,35 @@ class AppTheme {
   static TextStyle get blackMediumStyle =>
       TextStyle(color: black, fontSize: 11, fontWeight: FontWeight.w600);
 
+  static TextStyle get blackInfoStyle =>
+      TextStyle(color: black, fontSize: 20, fontWeight: FontWeight.w600);
+
+  static TextStyle get itemStyle =>
+      TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w600);
+
+  static TextStyle get actionStyle =>
+      TextStyle(color: black, fontSize: 17, fontWeight: FontWeight.w600);
+
+  static TextStyle get itemNameStyle =>
+      TextStyle(color: black, fontSize: 18, fontWeight: FontWeight.w700);
+
+  static TextStyle get brandStyle => const TextStyle(
+      color: AppColors.karimunBlue, fontSize: 20, fontWeight: FontWeight.w600);
+
   static TextStyle get blackExtraBoldStyle => const TextStyle(
       color: AppColors.lacqueredLiquorice,
       fontSize: 17,
       fontWeight: FontWeight.w800,
       letterSpacing: 0.60);
+
+  static TextStyle get sliverDefaultStyle => TextStyle(
+      fontSize: 35, fontWeight: FontWeight.bold, color: AppTheme.black);
+
+  static TextStyle get sliverButtonDefaultStyle =>
+      TextStyle(fontSize: 20, color: AppTheme.black);
+
+  static TextStyle get dangerTextStyle => const TextStyle(
+      fontSize: 35, fontWeight: FontWeight.bold, color: AppColors.bethlehemRed);
 
   //ToDo: InputDecoration
   static InputDecoration get searchInputDecoration => InputDecoration(
@@ -107,6 +131,83 @@ class AppTheme {
         iconColor: black,
       );
 
+  static ButtonStyle get navigationLogoButtonStyle => ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(18.0),
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        splashFactory: NoSplash.splashFactory,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        iconColor: black,
+      );
+
+  static ButtonStyle get sliverTextButtonStyle => TextButton.styleFrom(
+      backgroundColor: AppTheme.white,
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: AppTheme.black, width: 1),
+          borderRadius: BorderRadius.circular(10)));
+
+  static ButtonStyle get actionButtonStyle => TextButton.styleFrom(
+      backgroundColor: AppColors.karimunBlue,
+      foregroundColor: AppTheme.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)));
+
+  static ButtonStyle get defaultStyle => TextButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        side: BorderSide(
+          color: AppTheme.black,
+          width: 1,
+        ),
+        foregroundColor: AppColors.endindNavyBlue,
+        backgroundColor: AppTheme.primary.withOpacity(0.75),
+      );
+
+  //ToDo: BoxDecoration
+  static BoxDecoration get inventoryTabBoxDecoration => BoxDecoration(
+        color: AppColors.white,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+        border: Border.all(
+          color: AppColors.solitude,
+          width: 3,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.abaddonBlack
+                .withOpacity(0.05), // Shadow color (you can adjust the opacity)
+            offset: const Offset(0,
+                4), // Offset of the shadow (x, y). Here, it moves the shadow 4 pixels down
+            blurRadius: 6, // Blur radius (how soft the shadow appears)
+            spreadRadius: 2, // Spread radius (how much the shadow expands)
+          ),
+        ],
+      );
+
+  static BoxDecoration get squarebBoxDecoration => BoxDecoration(
+        color: AppColors.white,
+        border: Border.all(
+          color: AppColors.solitude,
+          width: 2,
+        ),
+      );
+
+  static BoxDecoration get defaultBoxDecoration => BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      );
+
   //ToDo: Theme
   static final ThemeData lightTheme = ThemeData(
     primaryColor: primary,
@@ -129,19 +230,28 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppTheme.white,
-      contentPadding: const EdgeInsets.all(30),
       hintStyle: appHintStyle,
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
         borderSide:
-            BorderSide(color: AppTheme.borderTextFieldBorderColor, width: 10.0),
+            BorderSide(color: AppTheme.chosenTextFieldBorderColor, width: 2.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide(color: AppTheme.borderTextFieldBorderColor),
       ),
     ),
 
     // Customize Elevated Button
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: primary,
+        backgroundColor: AppColors.white,
         elevation: 0,
         textStyle:
             TextStyle(color: black, fontSize: 14, fontWeight: FontWeight.bold),

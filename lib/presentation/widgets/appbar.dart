@@ -1,205 +1,239 @@
-import 'package:eaudelux/presentation/widgets/text_navigator_button.dart';
-import 'package:eaudelux/utils/styles/colours.dart';
-import 'package:eaudelux/utils/styles/themes.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:eaudelux/presentation/pages/login/login.dart';
+import 'package:eaudelux/presentation/widgets/import_packages.dart';
 
-class CustomAppBar extends StatelessWidget {
+class InventoryAppBar extends StatelessWidget {
   final Size appBarSize;
+  final List<String> brands;
+  final List<String> sizeTypes;
+  final String role;
 
-  const CustomAppBar({super.key, required this.appBarSize});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        EventCountdownSection(
-          height: appBarSize.height * 0.12,
-          width: appBarSize.width,
-        ),
-        ActionsSection(
-          height: appBarSize.height * 0.25,
-          width: appBarSize.width,
-        ),
-        NavigatorsSection(
-            height: appBarSize.height * 0.15, width: appBarSize.width),
-        SalesSection(height: appBarSize.height * 0.15, width: appBarSize.width),
-      ],
-    );
-  }
-}
-
-const double iconSize = 30;
-
-class EventCountdownSection extends StatelessWidget {
-  final double height, width;
-  final double iconWidth = iconSize;
-  final double iconHeight = iconSize;
-  final String fireIconPath = 'assets/icons/pngs/fire.png';
-
-  const EventCountdownSection(
-      {super.key, required this.height, required this.width});
+  const InventoryAppBar(
+      {super.key,
+      required this.appBarSize,
+      required this.brands,
+      required this.sizeTypes,
+      required this.role});
 
   @override
   Widget build(BuildContext context) {
-    final Image fireIcon =
-        Image.asset(fireIconPath, width: iconWidth, height: iconHeight);
-
     return Container(
-      color: AppTheme.primary,
-      width: width,
-      height: height,
-      child:
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        fireIcon,
-        Text('Only 11 days left until Christmas',
-            style: AppTheme.whiteMediumStyle),
-        fireIcon
-      ]),
+      color: AppColors.navyBlue,
+      height: appBarSize.height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonSection(
+              height: appBarSize.height,
+              width: appBarSize.width * 0.35,
+              brands: brands,
+              sizeTypes: sizeTypes,
+              role: role),
+          Text(
+              role == 'Operation Staff'
+                  ? 'Update Order Status'
+                  : 'Inventory Dashboard',
+              style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25)),
+          SizedBox(
+            width: appBarSize.width * 0.35,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: const BoxDecoration(
+                      color: AppColors.karimunBlue,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      )),
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/icons/svgs/logout.svg',
+                      height: 24.0, // Adjust the size as needed
+                      width: 24.0,
+                      colorFilter: const ColorFilter.mode(AppColors.white,
+                          BlendMode.srcIn), // Adjust the color if required
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => const LoginPage()));
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
 
-class ActionsSection extends StatelessWidget {
+class SalesAppBar extends StatelessWidget {
+  final Size appBarSize;
+  final String role;
+
+  const SalesAppBar({
+    super.key,
+    required this.role,
+    required this.appBarSize,
+  });
+
+  String _getRoleTitle(String role) {
+    switch (role) {
+      case 'CEO':
+        return 'Prediction Center';
+      case 'Sales Staff':
+        return 'Sales Action Center';
+      case 'Sales Manager':
+        return 'Sales Management';
+      case 'Sales Director':
+        return 'Sales Dashboard';
+      default:
+        return 'Sales Action Center'; // Default title for any other role
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.navyBlue,
+      height: appBarSize.height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonSection(
+              height: appBarSize.height,
+              width: appBarSize.width * 0.35,
+              role: role),
+          Text(
+            _getRoleTitle(role),
+            style: AppTheme.whiteMediumStyle.copyWith(fontSize: 25),
+          ),
+          SizedBox(
+            width: appBarSize.width * 0.35,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: const BoxDecoration(
+                      color: AppColors.karimunBlue,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      )),
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/icons/svgs/logout.svg',
+                      height: 24.0, // Adjust the size as needed
+                      width: 24.0,
+                      colorFilter: const ColorFilter.mode(AppColors.white,
+                          BlendMode.srcIn), // Adjust the color if required
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonSection extends StatelessWidget {
   final double height, width;
   final String logoImagePath = 'images/svgs/logo.svg';
   final String logoSemanticsLabel = 'EauDeLux Logo';
+  final List<String>? brands;
+  final List<String>? sizeTypes;
+  final String role;
 
-  ActionsSection({super.key, required this.height, required this.width});
+  const ButtonSection(
+      {super.key,
+      required this.height,
+      required this.width,
+      this.brands,
+      this.sizeTypes,
+      required this.role});
 
-  final TextField searchTextField = TextField(
-    style: AppTheme.appHintStyle.copyWith(color: AppTheme.black),
-    decoration: AppTheme.searchInputDecoration,
-  );
+  Widget buildButton(BuildContext context, String role) {
+    if (role == 'Operation Director') {
+      return Row(
+        children: [
+          TextButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InventoryDashboard(
+                      role: role,
+                    ))),
+            child: Text(
+              'Inventory',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          TextButton(
+            onPressed: () => ExcelExporter.exportPerfumeDataToExcel(
+                DataSample.perfumes, context),
+            child: Text(
+              'Print Report',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      );
+    } else if (role == 'Operation Manager') {
+      return Row(
+        children: [
+          TextButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InventoryDashboard(
+                      role: role,
+                    ))),
+            child: Text(
+              'Inventory',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          TextButton(
+            onPressed: () => {},
+            child: Text(
+              'Import Product',
+              style: AppTheme.whiteMediumStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      );
+    }
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
-    SizedBox logoPictureBox = SizedBox(
-        width: width * 0.25,
+    return SizedBox(
+        width: width,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              logoImagePath,
-              semanticsLabel: logoSemanticsLabel,
-              width: width * 0.15,
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => InventoryDashboard(
+                        role: role,
+                      ))),
+              style: AppTheme.navigationLogoButtonStyle,
+              child: SvgPicture.asset(
+                logoImagePath,
+                semanticsLabel: logoSemanticsLabel,
+              ),
             ),
+            buildButton(context, role)
           ],
         ));
-
-    final Container navigatorBox = Container(
-      color: AppTheme.white,
-      width: width * 0.25,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.account_circle),
-            label: Text('My Account', style: AppTheme.blackMediumStyle),
-            style: AppTheme.navigationUserSectionButtonStyle,
-          ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite),
-            label: Text('Wishlist', style: AppTheme.blackMediumStyle),
-            style: AppTheme.navigationUserSectionButtonStyle,
-          ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_bag),
-            label: Text('0 Items', style: AppTheme.blackMediumStyle),
-            style: AppTheme.navigationUserSectionButtonStyle,
-          ),
-        ],
-      ),
-    );
-
-    return Container(
-      color: AppTheme.white,
-      width: width * 0.9,
-      height: height,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            logoPictureBox,
-            SizedBox(width: width * 0.3, child: searchTextField),
-            navigatorBox
-          ]),
-    );
-  }
-}
-
-class NavigatorsSection extends StatelessWidget {
-  final double height, width;
-
-  const NavigatorsSection(
-      {super.key, required this.height, required this.width});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.white,
-      width: width,
-      height: height,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextNavigatorButton(
-            onPressedFunction: () {},
-            title: 'PERFUMES',
-            buttonStyle: AppTheme.navigationProductSectionButtonStyle,
-          ),
-          const SizedBox(width: 50),
-          TextNavigatorButton(
-            onPressedFunction: () {},
-            title: 'BRANDS',
-            buttonStyle: AppTheme.navigationProductSectionButtonStyle,
-          ),
-          const SizedBox(width: 50),
-          TextNavigatorButton(
-            onPressedFunction: () {},
-            title: 'GIFTS',
-            buttonStyle: AppTheme.navigationProductSectionButtonStyle,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SalesSection extends StatelessWidget {
-  final double height, width;
-
-  const SalesSection({super.key, required this.height, required this.width});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.cherubic,
-      width: width,
-      height: height,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('25% OFF - SITEWIDE -', style: AppTheme.blackMediumStyle.copyWith(fontSize: 16)),
-          TextNavigatorButton(
-            onPressedFunction: () {},
-            title: 'click here',
-            buttonStyle: AppTheme.navigationHotDealSectionButtonStyle,
-          ),
-          const SizedBox(width: 50),
-          Text('Or', style: AppTheme.blackMediumStyle.copyWith(fontSize: 16)),
-          const SizedBox(width: 50),
-          Text("FREE SHIPPING \$2 MIN - ", style: AppTheme.blackMediumStyle.copyWith(fontSize: 16)),
-          TextNavigatorButton(
-            onPressedFunction: () {},
-            title: 'click here',
-            buttonStyle: AppTheme.navigationHotDealSectionButtonStyle,
-          ),
-        ],
-      ),
-    );
   }
 }

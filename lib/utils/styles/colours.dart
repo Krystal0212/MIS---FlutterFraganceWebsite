@@ -3,9 +3,15 @@ import 'dart:ui';
 class AppColors {
   static const Color oneMinuteToMidnight = Color(0xFF003087);
 
+  static const Color cucumber = Color(0xFF006400);
+
   static const Color atmosphere = Color(0xFF009CDE);
 
   static const Color lightIris = Color(0x005151C6);
+
+  static const Color downriver = Color(0xFF061B5A);
+
+  static const Color navyBlue = Color(0xFF1C3A92);
 
   static const Color endindNavyBlue = Color(0xFF192F5D);
 
@@ -20,6 +26,8 @@ class AppColors {
   static const Color bneiBrakBay = Color(0xFF2557D6);
 
   static const Color verifiedBlack = Color(0xFF242424);
+
+  static const Color cancerSeagreenScarab = Color(0xFF29A3A3);
 
   static const Color theEnd = Color(0xFF2A2A2A);
 
@@ -75,7 +83,11 @@ class AppColors {
 
   static const Color lavenderMist = Color(0xFFE3E4FC);
 
+  static const Color solitude = Color(0xFFE9EBF0);
+
   static const Color foundationWhite = Color(0xFFF1F1FE);
+
+  static const Color citrusSplash = Color(0xFFFFC300);
 
   static const Color white = Color(0xFFFFFFFF); // Highest luminance (brightest)
 
@@ -83,11 +95,15 @@ class AppColors {
 
   static const Color limeShot = Color(0xFF1BE611);
 
+  static const Color karimunBlue = Color(0xFF1B97F3);
+
   static const Color fantasyConsoleSky = Color(0xFF2CA8FF);
 
   static const Color blueDeFrance = Color(0xFF2F80ED);
 
   static const Color lacqueredLiquorice = Color(0xFF383838);
+
+  static const Color brightLightGreen = Color(0xFF3BFF49);
 
   static const Color purpleShade = Color(0xFF4D2952);
 
@@ -103,11 +119,15 @@ class AppColors {
 
   static const Color shadowMountain = Color(0xFF585858);
 
+  static const Color tianLanSky = Color(0xFF58B1F6);
+
   static const Color seaCapture = Color(0xFF5BC0DE);
 
   static const Color azukiRed = Color(0xFF6A2626);
 
   static const Color heisenbergBlue = Color(0xFF6DD5FA);
+
+  static const Color akihabaraArcade = Color(0xFF6E1BFF);
 
   static const Color cabbageBlossomViolet = Color(0xFF764B7C);
 
@@ -129,9 +149,13 @@ class AppColors {
 
   static const Color sangoRed = Color(0xFFFA6650);
 
+  static const Color windsorBrown = Color(0xFFA35A00);
+
   static const Color pelati = Color(0xFFFF3636);
 
   static const Color corona = Color(0xFFFFB236);
+
+  static const Color icyLandscape = Color(0xFFC9E6FC);
 
   static const Color officeNeonLight = Color(0xFFFE2472);
 }
